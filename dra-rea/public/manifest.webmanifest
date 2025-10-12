@@ -1,0 +1,11 @@
+{
+  "name": "IMREA Digital",
+  "short_name": "IMREA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#a1203a",
+  "icons": [
+    { "src": "/IMREA.png", "sizes": "192x192", "type": "image/png" }
+  ]
+}
