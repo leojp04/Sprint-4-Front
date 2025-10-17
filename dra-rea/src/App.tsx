@@ -3,7 +3,6 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
 import WatsonChat from './components/WatsonChat'
 
-
 const Home = lazy(() => import('./pages/Home'))
 const Sobre = lazy(() => import('./pages/Sobre'))
 const Integrantes = lazy(() => import('./pages/Integrantes'))
@@ -12,6 +11,11 @@ const FAQ = lazy(() => import('./pages/FAQ'))
 const Contato = lazy(() => import('./pages/Contato'))
 const Solucao = lazy(() => import('./pages/Solucao'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+
+const Login = lazy(() => import('./pages/Login'))
+const Cadastro = lazy(() => import('./pages/Cadastro'))
+const Usuarios = lazy(() => import('./pages/Usuarios'))
+const UsuarioDetalhe = lazy(() => import('./pages/UsuarioDetalhe'))
 
 export default function App() {
   const location = useLocation()
@@ -24,14 +28,16 @@ export default function App() {
       '/faq': 'FAQ | IMREA Digital',
       '/contato': 'Contato | IMREA Digital',
       '/solucao': 'Solução | IMREA Digital',
+      '/login': 'Login | IMREA Digital',
+      '/cadastro': 'Cadastro | IMREA Digital',
+      '/usuarios': 'Usuários | IMREA Digital',
     }
-
-    // Trata rota dinâmica /integrantes/:rm
-    if (location.pathname.startsWith('/integrantes/') && location.pathname !== '/integrantes') {
-      document.title = 'Membro | IMREA Digital'
-      return
+    if (location.pathname.startsWith('/integrantes/')) {
+      document.title = 'Membro | IMREA Digital'; return
     }
-
+    if (location.pathname.startsWith('/usuarios/')) {
+      document.title = 'Detalhes do Usuário | IMREA Digital'; return
+    }
     document.title = titles[location.pathname] ?? 'IMREA Digital'
   }, [location.pathname])
 
@@ -47,12 +53,16 @@ export default function App() {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/solucao" element={<Solucao />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/usuarios" element={<Usuarios />} />
+            <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
+
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </Suspense>
-
-      {/* Carrega o chat globalmente para toda a SPA */}
       <WatsonChat />
     </>
   )
