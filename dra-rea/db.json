@@ -1,0 +1,25 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "Caio Martins",
+      "nomeUsuario": "caioM",
+      "email": "caio.martins@fiap.com",
+      "avatar": "https://i.pravatar.cc/120?img=1"
+    },
+    {
+      "id": 2,
+      "nome": "Larissa Almeida",
+      "nomeUsuario": "lariA",
+      "email": "larissa.almeida@fiap.com",
+      "avatar": "https://i.pravatar.cc/120?img=2"
+    },
+    {
+      "id": 3,
+      "nome": "Thiago Rocha",
+      "nomeUsuario": "thiagoR",
+      "email": "thiago.rocha@fiap.com",
+      "avatar": "https://i.pravatar.cc/120?img=3"
+    }
+  ]
+}
