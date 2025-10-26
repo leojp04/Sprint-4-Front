@@ -1,7 +1,6 @@
 # IMREA Digital — Sprint 3 (Front-end Design Engineering)
 
-Aplicação **React + Vite + TypeScript** com **Tailwind CSS**.  
-SPA com rotas, componentes reutilizáveis, dados centralizados e formulário validado com **React Hook Form**.
+SPA desenvolvida em **React 19 + Vite + TypeScript**, utilizando **Tailwind 4**, **React Hook Form + Zod**, **React Router** e **json-server** para simulação de API.
 
 
 
@@ -23,12 +22,15 @@ npm run build; npm run preview
 
 
 ## Tecnologias
-- React + TypeScript 
-- Vite 
-- React Router DOM 
-- Tailwind CSS 
-- React Hook Form 
-- Acessibilidade básica 
+- React 19
+- Vite
+- TypeScript
+- Tailwind CSS 4
+- React Router
+- React Hook Form + Zod
+- json-server
+- ESLint
+
 
 ## Integrantes
 - **Leonardo José Pereira** — RM **563065** — 1TDSPW  
@@ -85,9 +87,9 @@ dra-rea/
 ```
 
 ## Link do GitHub 
-- **URL:** https://github.com/challenge-FA-IC-LE/Challenge_Front.git
-- **URL:** https://github.com/challenge-FA-IC-LE/Challenge_Front
+- **URL:** https://github.com/leojp04/Sprint-4-Front.git
+- **URL:** https://github.com/leojp04/Sprint-4-Front
 
 ## Link do Vídeo 
-- **URL:** https://youtu.be/ULE_BGR9PWE?si=gz_eFLLmoONg6Ow1
+- **URL:** 
 
