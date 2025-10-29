@@ -165,9 +165,12 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          disabled={isSubmitting || !isValid}
-          className={`inline-block rounded-lg px-4 py-2 font-bold transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand ${
-            isSubmitting || !isValid ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-brand text-white'
+          disabled={!isValid || isSubmitting}
+          aria-disabled={!isValid}
+          className={`w-full rounded-md px-4 py-2 font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand ${
+            !isValid
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-[var(--brand)] text-white hover:brightness-90'
           }`}
         >
           {mode === 'login' ? 'Entrar' : 'Cadastrar'}
