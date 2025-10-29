@@ -1,17 +1,17 @@
 export default function Sobre() {
   return (
     <section className="max-w-4xl mx-auto px-4">
-      {/* Título */}
+      {/* Titulo */}
       <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-center mb-8">
         Sobre o Projeto
       </h1>
 
-      {/* Introdução */}
+      {/* Introducao */}
       <p className="text-gray-800 leading-relaxed mb-4">
-        O <strong>IMREA Digital</strong> é um site pensado para facilitar o acesso de pacientes e
-        cuidadores às informações e serviços do Instituto de Medicina Física e Reabilitação do
-        Hospital das Clínicas (<strong>IMREA-HCFMUSP</strong>). A proposta é oferecer um ambiente
-        simples, inclusivo e responsivo — com linguagem clara, navegação direta e apoio da
+        O <strong>IMREA Digital</strong> e um site pensado para facilitar o acesso de pacientes e
+        cuidadores as informacoes e servicos do Instituto de Medicina Fisica e Reabilitacao do
+        Hospital das Clinicas (<strong>IMREA-HCFMUSP</strong>). A proposta e oferecer um ambiente
+        simples, inclusivo e responsivo  com linguagem clara, navegacao direta e apoio da
         <strong> Dra. REA</strong>, nossa assistente virtual.
       </p>
 
@@ -21,33 +21,33 @@ export default function Sobre() {
           Qual necessidade este projeto atende?
         </h2>
         <p className="text-gray-700 leading-relaxed">
-          Muitos pacientes atendidos pelo IMREA têm limitações motoras ou barreiras tecnológicas
-          que dificultam o acesso a informações básicas (horários, localização, remarcações).
-          Centralizamos tudo em um só lugar, com acessibilidade e suporte automatizado.
+          Muitos pacientes atendidos pelo IMREA tem limitacoes motoras ou barreiras tecnologicas
+          que dificultam o acesso a informacoes basicas (horarios, localizacao, remarcacoes).
+          Centralizamos tudo em um so lugar, com acessibilidade e suporte automatizado.
         </p>
       </div>
 
-      {/* O que o usuário encontra no site */}
+      {/* O que o usuario encontra no site */}
       <h2 className="text-xl font-bold tracking-tight leading-snug mb-3">
-        O que você encontra aqui
+        O que voce encontra aqui
       </h2>
       <ul className="list-disc pl-5 space-y-2 text-gray-800 leading-relaxed mb-6">
-        <li>Informações objetivas sobre <strong>horários</strong>, <strong>endereços</strong> e <strong>contato</strong>.</li>
-        <li><strong>FAQ</strong> com dúvidas frequentes (teleatendimento, remarcações e mais).</li>
-        <li>Página de <strong>Integrantes</strong> com identificação do time (Nome, RM e Turma).</li>
-        <li>Formulário de <strong>Contato</strong> com validação para mensagens claras.</li>
-        <li>Suporte da <strong>Dra. REA</strong> (chatbot) para guiar processos simples de forma rápida.</li>
+        <li>Informacoes objetivas sobre <strong>horarios</strong>, <strong>enderecos</strong> e <strong>contato</strong>.</li>
+        <li><strong>FAQ</strong> com duvidas frequentes (teleatendimento, remarcacoes e mais).</li>
+        <li>Pagina de <strong>Integrantes</strong> com identificacao do time (Nome, RM e Turma).</li>
+        <li>Formulario de <strong>Contato</strong> com validacao para mensagens claras.</li>
+        <li>Suporte da <strong>Dra. REA</strong> (chatbot) para guiar processos simples de forma rapida.</li>
       </ul>
 
-      {/* Benefícios / Impacto */}
+      {/* Beneficios / Impacto */}
       <h2 className="text-xl font-bold tracking-tight leading-snug mb-3">
-        Benefícios para pacientes e cuidadores
+        Beneficios para pacientes e cuidadores
       </h2>
       <ul className="list-disc pl-5 space-y-2 text-gray-800 leading-relaxed mb-6">
-        <li>Navegação acessível (alto contraste opcional, foco visível, textos legíveis).</li>
-        <li>Redução de dúvidas e do <strong>absenteísmo</strong> por falta de informação.</li>
+        <li>Navegacao acessivel (alto contraste opcional, foco visivel, textos legiveis).</li>
+        <li>Reducao de duvidas e do <strong>absenteismo</strong> por falta de informacao.</li>
         <li>Agilidade para <strong>remarcar</strong> e confirmar atendimentos.</li>
-        <li>Comunicação mais clara entre pacientes, cuidadores e equipe do IMREA.</li>
+        <li>Comunicacao mais clara entre pacientes, cuidadores e equipe do IMREA.</li>
       </ul>
 
 
@@ -56,9 +56,9 @@ export default function Sobre() {
           Nosso compromisso com acessibilidade e linguagem clara
         </h2>
         <p className="text-gray-700 leading-relaxed">
-          Usamos hierarquia visual consistente, botões e links com foco visível, textos em leitura
-          confortável e alternativas de alto contraste. As páginas priorizam instruções diretas,
-          evitando termos técnicos desnecessários.
+          Usamos hierarquia visual consistente, botoes e links com foco visivel, textos em leitura
+          confortavel e alternativas de alto contraste. As paginas priorizam instrucoes diretas,
+          evitando termos tecnicos desnecessarios.
         </p>
       </div>
     </section>

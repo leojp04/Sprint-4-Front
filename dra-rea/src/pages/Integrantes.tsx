@@ -15,7 +15,7 @@ export default function Integrantes() {
   return (
     <section className="max-w-5xl mx-auto px-4">
       <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-center mb-10">
-        Conheça os integrantes
+        Conheca os integrantes
       </h1>
 
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">

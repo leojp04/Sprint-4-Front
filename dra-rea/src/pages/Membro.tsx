@@ -15,11 +15,11 @@ export default function Membro() {
     return (
       <section className="text-center px-4">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight mb-2">
-          Membro não encontrado
+          Membro nao encontrado
         </h1>
         <p className="text-gray-700 leading-relaxed">Verifique o RM informado.</p>
         <div className="mt-4">
-          <Link to="/integrantes" className="underline text-brand">← Voltar aos Integrantes</Link>
+          <Link to="/integrantes" className="underline text-brand"> Voltar aos Integrantes</Link>
         </div>
       </section>
     )
@@ -41,7 +41,7 @@ export default function Membro() {
       </h1>
 
       <p className="text-gray-700 mb-4 leading-relaxed">
-        RM {membro.rm} — Turma {membro.turma}
+        RM {membro.rm}  Turma {membro.turma}
       </p>
 
       <div className="flex justify-center gap-4">
@@ -68,7 +68,7 @@ export default function Membro() {
       </div>
 
       <div className="mt-6">
-        <Link to="/integrantes" className="underline text-brand">← Voltar aos Integrantes</Link>
+        <Link to="/integrantes" className="underline text-brand"> Voltar aos Integrantes</Link>
       </div>
     </section>
   )

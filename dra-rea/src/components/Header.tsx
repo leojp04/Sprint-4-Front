@@ -2,19 +2,19 @@ import { NavLink } from 'react-router-dom'
 
 type LinkItem = { to: string; label: string; end?: boolean }
 
-export default function Header() {
-  const links: LinkItem[] = [
-    { to: '/', label: 'Início', end: true },
-    { to: '/sobre', label: 'Sobre' },
-    { to: '/integrantes', label: 'Integrantes' },
-    { to: '/usuarios', label: 'Usuários' },
-    { to: '/faq', label: 'FAQ' },
-    { to: '/contato', label: 'Contato' },
-    { to: '/solucao', label: 'Solução' },
-    { to: '/login', label: 'Login' },
-    { to: '/cadastro', label: 'Cadastro' },
-  ]
+const LINKS: LinkItem[] = [
+  { to: '/', label: 'Inicio', end: true },
+  { to: '/sobre', label: 'Sobre' },
+  { to: '/integrantes', label: 'Integrantes' },
+  { to: '/usuarios', label: 'Usuarios' },
+  { to: '/faq', label: 'FAQ' },
+  { to: '/contato', label: 'Contato' },
+  { to: '/solucao', label: 'Solucao' },
+  { to: '/login', label: 'Login' },
+  { to: '/cadastro', label: 'Cadastro' },
+]
 
+export default function Header() {
   return (
     <header className="bg-white text-black border-b border-gray-200 sticky top-0 z-40">
       <div className="max-w-5xl mx-auto px-4 py-4 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -23,7 +23,7 @@ export default function Header() {
           <h1 className="text-xl md:text-2xl font-bold">IMREA Digital</h1>
         </div>
         <nav aria-label="Principal" className="flex flex-wrap items-center gap-2 sm:ml-auto">
-          {links.map((link) => (
+          {LINKS.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}

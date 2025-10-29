@@ -17,33 +17,42 @@ const Cadastro = lazy(() => import('./pages/Cadastro'))
 const Usuarios = lazy(() => import('./pages/Usuarios'))
 const UsuarioDetalhe = lazy(() => import('./pages/UsuarioDetalhe'))
 
+const TITLES: Record<string, string> = {
+  '/': 'IMREA Digital | Reabilitacao com acolhimento',
+  '/sobre': 'Sobre | IMREA Digital',
+  '/integrantes': 'Integrantes | IMREA Digital',
+  '/faq': 'FAQ | IMREA Digital',
+  '/contato': 'Contato | IMREA Digital',
+  '/solucao': 'Solucao | IMREA Digital',
+  '/login': 'Login | IMREA Digital',
+  '/cadastro': 'Cadastro | IMREA Digital',
+  '/usuarios': 'Usuarios | IMREA Digital',
+}
+
 export default function App() {
   const location = useLocation()
 
   useEffect(() => {
-    const titles: Record<string, string> = {
-      '/': 'IMREA Digital | Reabilitação com acolhimento',
-      '/sobre': 'Sobre | IMREA Digital',
-      '/integrantes': 'Integrantes | IMREA Digital',
-      '/faq': 'FAQ | IMREA Digital',
-      '/contato': 'Contato | IMREA Digital',
-      '/solucao': 'Solução | IMREA Digital',
-      '/login': 'Login | IMREA Digital',
-      '/cadastro': 'Cadastro | IMREA Digital',
-      '/usuarios': 'Usuários | IMREA Digital',
-    }
     if (location.pathname.startsWith('/integrantes/')) {
-      document.title = 'Membro | IMREA Digital'; return
+      document.title = 'Membro | IMREA Digital'
+      return
     }
     if (location.pathname.startsWith('/usuarios/')) {
-      document.title = 'Detalhes do Usuário | IMREA Digital'; return
+      document.title = 'Detalhes do Usuario | IMREA Digital'
+      return
     }
-    document.title = titles[location.pathname] ?? 'IMREA Digital'
+    document.title = TITLES[location.pathname] ?? 'IMREA Digital'
   }, [location.pathname])
 
   return (
     <>
-      <Suspense fallback={<div className="p-8 text-center">Carregando…</div>}>
+      <Suspense
+        fallback={
+          <div className="p-8 text-center" role="status" aria-live="polite">
+            Carregando...
+          </div>
+        }
+      >
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />

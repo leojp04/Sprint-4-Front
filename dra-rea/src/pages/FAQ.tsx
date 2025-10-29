@@ -4,29 +4,29 @@ type QA = { q: string; a: string }
 
 const FAQS: QA[] = [
   {
-    q: '📅 Como remarcar um atendimento?',
-    a: 'Você pode remarcar seu atendimento pelo chatbot (botão no canto inferior direito). Informe nome e CPF e escolha uma nova data disponível. A Dra. REA guia todo o processo.'
+    q: ' Como remarcar um atendimento?',
+    a: 'Voce pode remarcar seu atendimento pelo chatbot (botao no canto inferior direito). Informe nome e CPF e escolha uma nova data disponivel. A Dra. REA guia todo o processo.'
   },
   {
-    q: '💻 Como funciona o teleatendimento?',
-    a: 'A consulta é remota por vídeo com profissional do IMREA. Você recebe um link por e-mail/Telegram. Esteja em local silencioso, com internet estável e câmera/microfone liberados.'
+    q: ' Como funciona o teleatendimento?',
+    a: 'A consulta e remota por video com profissional do IMREA. Voce recebe um link por e-mail/Telegram. Esteja em local silencioso, com internet estavel e camera/microfone liberados.'
   },
   {
-    q: '📍 Onde fica o IMREA?',
-    a: 'Eixo Rosa do Complexo do HC, nº 7 — Portão 3 do Inrad — São Paulo — SP. Acesso por transporte público e veículos adaptados.'
+    q: ' Onde fica o IMREA?',
+    a: 'Eixo Rosa do Complexo do HC, no 7  Portao 3 do Inrad  Sao Paulo  SP. Acesso por transporte publico e veiculos adaptados.'
   },
   {
-    q: '🕘 Quais são os horários de funcionamento?',
-    a: 'Atendimentos de segunda a sexta, das 7h às 18h. O chatbot Dra. REA funciona 24h para dúvidas e orientações.'
+    q: ' Quais sao os horarios de funcionamento?',
+    a: 'Atendimentos de segunda a sexta, das 7h as 18h. O chatbot Dra. REA funciona 24h para duvidas e orientacoes.'
   },
   {
-    q: '☎️ Quem devo procurar em caso de dúvidas específicas?',
-    a: 'Se o chatbot não resolver, contate a Central de Atendimento pelo (11) 2661-7557 ou procure a recepção do IMREA.'
+    q: ' Quem devo procurar em caso de duvidas especificas?',
+    a: 'Se o chatbot nao resolver, contate a Central de Atendimento pelo (11) 2661-7557 ou procure a recepcao do IMREA.'
   }
 ]
 
 export default function FAQ() {
-  // começa com a primeira pergunta aberta
+  // comeca com a primeira pergunta aberta
   const [openSet, setOpenSet] = useState<Set<number>>(new Set([0]))
   const [showMore, setShowMore] = useState(false)
 
@@ -62,10 +62,10 @@ export default function FAQ() {
                 aria-controls={panelId}
               >
                 <span className="font-semibold">{item.q}</span>
-                <span className="ml-4">{open ? '−' : '+'}</span>
+                <span className="ml-4">{open ? '' : '+'}</span>
               </button>
 
-              {/* Painel sempre no DOM; só alterna visibilidade */}
+              {/* Painel sempre no DOM; so alterna visibilidade */}
               <div
                 id={panelId}
                 role="region"
@@ -83,7 +83,7 @@ export default function FAQ() {
       {showMore && (
         <div className="mt-4 text-gray-700 leading-relaxed">
           <p>
-            Conteúdo complementar sobre acessibilidade, direitos do paciente e canais alternativos de suporte.
+            Conteudo complementar sobre acessibilidade, direitos do paciente e canais alternativos de suporte.
           </p>
         </div>
       )}

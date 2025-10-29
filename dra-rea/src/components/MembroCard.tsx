@@ -27,7 +27,7 @@ export default function MembroCard({
 
       <p className="text-lg font-semibold">{nome}</p>
       <p className="text-sm text-gray-600 mt-1">
-        RM {rm} — {turma}
+        RM {rm} - {turma}
       </p>
 
       {(github || linkedin) && (

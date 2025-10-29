@@ -1,6 +1,10 @@
+import type { ReactNode } from 'react'
+
+type AlertTone = 'success' | 'error' | 'info' | 'warning'
+
 type Props = {
-  type?: 'success' | 'error' | 'info' | 'warning'
-  children: React.ReactNode
+  type?: AlertTone
+  children: ReactNode
   role?: 'status' | 'alert'
 }
 
