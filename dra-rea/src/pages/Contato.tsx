@@ -1,16 +1,9 @@
-import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import Alert from '../components/Alert'
 
-type FormData = {
-  nome: string
-  email: string
-  telefone?: string
-  mensagem: string
-}
+const primaryButtonClasses = 'inline-flex items-center justify-center bg-[#a1203a] text-white font-semibold px-6 py-2 rounded-lg hover:bg-[#8b1c34] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#a1203a] transition-colors disabled:opacity-60 disabled:cursor-not-allowed'
+const secondaryButtonClasses = 'inline-flex items-center justify-center bg-[#f3e5e5] text-[#111827] font-medium px-6 py-2 rounded-lg border border-[#a1203a]/30 opacity-90 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#a1203a] transition-colors'
 
-const LIMITE_MENSAGEM = 600
-const nomeRegex = /^[\p{L}\s'-]+$/u
+type FormData = { nome: string; email: string; mensagem: string }
 
 export default function Contato() {
   const {
@@ -18,158 +11,144 @@ export default function Contato() {
     handleSubmit,
     reset,
     watch,
-    formState: { errors, isSubmitSuccessful, isSubmitting, isValid },
+    formState: { errors, isSubmitSuccessful, isSubmitting, isValid }
   } = useForm<FormData>({ mode: 'onTouched' })
 
-  const caracteres = watch('mensagem', '').length
+  const msg = watch('mensagem') || ''
+  const maxMsg = 600
 
-  const regrasNome = useMemo(
-    () => ({
-      required: 'Informe o nome completo',
-      minLength: { value: 3, message: 'Minimo de 3 caracteres' },
-      pattern: { value: nomeRegex, message: 'Use apenas letras, espacos, hifen ou apostrofo' },
-    }),
-    []
-  )
-
-  async function onSubmit(data: FormData) {
-    // Simula o envio para a API de suporte
-    await new Promise((resolve) => setTimeout(resolve, 700))
-    console.info('Mensagem enviada', data)
+  const onSubmit = async (_data: FormData) => {
+    await new Promise((resolve) => setTimeout(resolve, 500))
     reset()
   }
 
   return (
-    <section className="max-w-4xl mx-auto space-y-10">
-      <header className="text-center space-y-3">
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
-          Fale com a equipe IMREA Digital
-        </h1>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Utilize o formulario para registrar sugestoes, duvidas sobre terapias ou solicitacoes
-          relacionadas ao uso da plataforma. O time de atendimento responde em ate um dia util.
-        </p>
-      </header>
+    <section className="max-w-4xl mx-auto px-4">
+      <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-center mb-6">
+        Fale Conosco
+      </h2>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="bg-white border border-gray-200 rounded-xl p-6 md:p-8 shadow-sm space-y-5"
+        className="max-w-xl mx-auto bg-white border border-gray-200 rounded-xl p-5 md:p-6 shadow-sm"
+        aria-describedby="contato-feedback"
       >
-        {isSubmitSuccessful && (
-          <Alert type="success">
-            Mensagem enviada com sucesso! Nossa equipe retornara assim que possivel.
-          </Alert>
-        )}
-
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="space-y-1">
-            <span className="font-semibold">Nome completo *</span>
-            <input
-              type="text"
-              className={`w-full rounded-lg px-3 py-2 border ${
-                errors.nome ? 'border-red-600' : 'border-gray-300'
-              } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
-              {...register('nome', regrasNome)}
-              autoComplete="name"
-            />
-            {errors.nome && <p className="text-red-600 text-sm">{errors.nome.message}</p>}
+        <div className="mb-4">
+          <label htmlFor="nome" className="font-semibold leading-snug">
+            Nome completo <span className="text-[#a1203a]" aria-hidden="true">*</span>
           </label>
-
-          <label className="space-y-1">
-            <span className="font-semibold">E-mail *</span>
-            <input
-              type="email"
-              className={`w-full rounded-lg px-3 py-2 border ${
-                errors.email ? 'border-red-600' : 'border-gray-300'
-              } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
-              {...register('email', {
-                required: 'Informe um e-mail valido',
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Digite um e-mail no formato nome@dominio.com',
-                },
-              })}
-              autoComplete="email"
-            />
-            {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
-          </label>
+          <p className="text-sm text-gray-600 mb-1">Como esta no documento.</p>
+          <input
+            id="nome"
+            className={`w-full rounded-lg px-3 py-2 border ${errors.nome ? 'border-red-600' : 'border-gray-300'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#a1203a]`}
+            placeholder="Ex.: Maria da Silva"
+            autoComplete="name"
+            aria-invalid={errors.nome ? 'true' : undefined}
+            aria-describedby={errors.nome ? 'nome-error' : undefined}
+            {...register('nome', {
+              required: 'Informe seu nome',
+              minLength: { value: 3, message: 'Minimo de 3 caracteres' }
+            })}
+          />
+          {errors.nome && (
+            <p id="nome-error" className="text-red-600 text-sm mt-1" role="alert">
+              {errors.nome.message}
+            </p>
+          )}
         </div>
 
-        <label className="space-y-1 block">
-          <span className="font-semibold">Telefone (opcional)</span>
+        <div className="mb-4">
+          <label htmlFor="email" className="font-semibold leading-snug">
+            E-mail <span className="text-[#a1203a]" aria-hidden="true">*</span>
+          </label>
+          <p className="text-sm text-gray-600 mb-1">Usaremos para responder sua mensagem.</p>
           <input
-            type="tel"
-            className="w-full rounded-lg px-3 py-2 border border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand"
-            placeholder="(11) 2661-0000"
-            {...register('telefone', {
+            id="email"
+            type="email"
+            inputMode="email"
+            className={`w-full rounded-lg px-3 py-2 border ${errors.email ? 'border-red-600' : 'border-gray-300'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#a1203a]`}
+            placeholder="seuemail@exemplo.com"
+            autoComplete="email"
+            aria-invalid={errors.email ? 'true' : undefined}
+            aria-describedby={errors.email ? 'email-error' : undefined}
+            {...register('email', {
+              required: 'Informe seu e-mail',
               pattern: {
-                value: /^\(?\d{2}\)? ?\d{4,5}-?\d{4}$/,
-                message: 'Use um telefone valido com DDD',
-              },
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'E-mail invalido'
+              }
             })}
           />
-          {errors.telefone && <p className="text-red-600 text-sm">{errors.telefone.message}</p>}
-        </label>
+          {errors.email && (
+            <p id="email-error" className="text-red-600 text-sm mt-1" role="alert">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
 
-        <label className="space-y-1 block">
-          <span className="font-semibold">Mensagem *</span>
+        <div className="mb-4">
+          <label htmlFor="mensagem" className="font-semibold leading-snug">
+            Mensagem <span className="text-[#a1203a]" aria-hidden="true">*</span>
+          </label>
+          <p className="text-sm text-gray-600 mb-1">Conte em poucas linhas o motivo do contato.</p>
           <textarea
+            id="mensagem"
             rows={6}
-            className={`w-full rounded-lg px-3 py-2 border ${
-              errors.mensagem ? 'border-red-600' : 'border-gray-300'
-            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
-            maxLength={LIMITE_MENSAGEM}
+            maxLength={maxMsg}
+            className={`w-full rounded-lg px-3 py-2 border ${errors.mensagem ? 'border-red-600' : 'border-gray-300'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#a1203a]`}
+            placeholder="Escreva aqui"
+            spellCheck
+            aria-invalid={errors.mensagem ? 'true' : undefined}
+            aria-describedby={errors.mensagem ? 'mensagem-error' : 'mensagem-help'}
             {...register('mensagem', {
-              required: 'Descreva a solicitacao em ate 600 caracteres',
-              minLength: { value: 10, message: 'Explique em pelo menos 10 caracteres' },
-              maxLength: { value: LIMITE_MENSAGEM, message: 'Limite de 600 caracteres' },
+              required: 'Digite sua mensagem',
+              minLength: { value: 10, message: 'Minimo de 10 caracteres' },
+              maxLength: { value: maxMsg, message: `Maximo de ${maxMsg} caracteres` }
             })}
           />
-          <div className="flex justify-between text-xs text-gray-500">
-            <span>{caracteres}/{LIMITE_MENSAGEM}</span>
-            {errors.mensagem && <span className="text-red-600">{errors.mensagem.message}</span>}
+          <div className="flex items-center justify-between">
+            {errors.mensagem ? (
+              <p id="mensagem-error" className="text-red-600 text-sm mt-1" role="alert">
+                {errors.mensagem.message}
+              </p>
+            ) : (
+              <span id="mensagem-help" className="text-xs text-gray-500 mt-1">
+                {msg.length}/{maxMsg}
+              </span>
+            )}
           </div>
-        </label>
+        </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex items-center gap-3">
           <button
             type="submit"
             disabled={isSubmitting || !isValid}
-            className={`inline-flex items-center justify-center rounded-lg px-4 py-2 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand ${
-              isSubmitting || !isValid
-                ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                : 'bg-brand text-white'
-            }`}
+            className={primaryButtonClasses}
           >
-            {isSubmitting ? 'Enviando...' : 'Enviar mensagem'}
+            {isSubmitting ? 'Enviando...' : 'Enviar'}
           </button>
+
           <button
             type="button"
-            className="inline-flex items-center justify-center border-2 border-brand text-brand font-bold rounded-lg px-4 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand"
             onClick={() => reset()}
+            className={secondaryButtonClasses}
           >
             Limpar
           </button>
         </div>
+
+        <p id="contato-feedback" className="mt-3 text-green-700" role="status" aria-live="polite">
+          {isSubmitSuccessful ? 'Mensagem enviada! Obrigado pelo contato.' : ''}
+        </p>
       </form>
 
-      <aside className="max-w-4xl mx-auto px-4 text-center md:text-left grid gap-4 md:grid-cols-2">
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-2">
-          <h2 className="text-lg font-semibold">Central de atendimento</h2>
-          <p className="text-gray-700">Segunda a sexta, das 7h as 18h (horario de Brasilia).</p>
-          <p className="text-gray-900 font-bold">(11) 2661-7557</p>
-        </div>
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-2">
-          <h2 className="text-lg font-semibold">Enderecos IMREA</h2>
-          <p className="text-gray-700">
-            Unidade Lapa, Unidade Vila Mariana, Unidade Jardins e Unidade Lucy Montoro.
-          </p>
-          <p className="text-gray-700">
-            Consulte a pagina Sobre para mapas, acessibilidade e orientacoes de transporte.
-          </p>
-        </div>
-      </aside>
+      <div className="max-w-xl mx-auto mt-6 text-center text-sm text-gray-700">
+        <p>
+          Se preferir, fale com a Central de Atendimento: <strong>(11) 2661-7557</strong> - Segunda a sexta, 7h as 18h.
+        </p>
+      </div>
     </section>
   )
 }
+
