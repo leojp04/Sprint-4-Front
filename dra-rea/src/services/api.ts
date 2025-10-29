@@ -23,3 +23,39 @@ export const api = {
   put:  <T>(path: string, payload: unknown) => request<T>(path, 'PUT', payload),
   del:  <T>(path: string) => request<T>(path, 'DELETE'),
 }
+
+// Types used by auth helpers (kept lightweight to avoid coupling)
+type AnyUser = {
+  id: number
+  email: string
+  username?: string
+  nomeUsuario?: string
+  password?: string
+  [k: string]: unknown
+}
+
+export async function getUserByEmailOrUsername(query: string): Promise<AnyUser | null> {
+  const q = encodeURIComponent(query)
+  // Try by email first
+  const byEmail = await api.get<AnyUser[]>(`/usuarios?email=${q}`)
+  if (byEmail.length > 0) return byEmail[0]
+  // Then by username (new) and nomeUsuario (legacy)
+  const byUser = await api.get<AnyUser[]>(`/usuarios?username=${q}`)
+  if (byUser.length > 0) return byUser[0]
+  const byLegacy = await api.get<AnyUser[]>(`/usuarios?nomeUsuario=${q}`)
+  if (byLegacy.length > 0) return byLegacy[0]
+  return null
+}
+
+export async function createUser(payload: Partial<AnyUser> & { email: string; username?: string; nomeUsuario?: string; password: string }) {
+  // Let json-server assign the id
+  return api.post<AnyUser>('/usuarios', payload)
+}
+
+export async function login({ emailOrUsername, password }: { emailOrUsername: string; password: string }): Promise<AnyUser | null> {
+  const user = await getUserByEmailOrUsername(emailOrUsername)
+  if (!user) return null
+  // Compare plain password (as requested)
+  if ((user.password ?? '') !== password) return null
+  return user
+}

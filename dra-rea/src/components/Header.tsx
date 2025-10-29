@@ -15,7 +15,6 @@ export default function Header() {
     { to: '/contato', label: 'Contato' },
     { to: '/solucao', label: 'Solucao' },
     { to: '/login', label: 'Login' },
-    { to: '/cadastro', label: 'Cadastro' },
   ]
 
   return (

@@ -3,23 +3,38 @@
     {
       "id": 1,
       "nome": "Caio Martins",
+      "nomeCompleto": "Caio Martins",
       "nomeUsuario": "caioM",
+      "username": "caioM",
       "email": "caio.martins@fiap.com",
+      "password": "123456",
       "avatar": "https://i.pravatar.cc/120?img=1"
     },
     {
       "id": 2,
       "nome": "Larissa Almeida",
+      "nomeCompleto": "Larissa Almeida",
       "nomeUsuario": "lariA",
+      "username": "lariA",
       "email": "larissa.almeida@fiap.com",
+      "password": "123456",
       "avatar": "https://i.pravatar.cc/120?img=2"
     },
     {
       "id": 3,
       "nome": "Thiago Rocha",
+      "nomeCompleto": "Thiago Rocha",
       "nomeUsuario": "thiagoR",
+      "username": "thiagoR",
       "email": "thiago.rocha@fiap.com",
+      "password": "123456",
       "avatar": "https://i.pravatar.cc/120?img=3"
+    },
+    {
+      "id": "b486",
+      "nomeCompleto": "Leo",
+      "email": "njfuionrbuonbou@fiap.com",
+      "password": "123456"
     }
   ]
 }
