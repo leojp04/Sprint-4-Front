@@ -11,9 +11,7 @@ const FAQ = lazy(() => import('./pages/FAQ'))
 const Contato = lazy(() => import('./pages/Contato'))
 const Solucao = lazy(() => import('./pages/Solucao'))
 const NotFound = lazy(() => import('./pages/NotFound'))
-
 const Login = lazy(() => import('./pages/Login'))
-const Cadastro = lazy(() => import('./pages/Cadastro'))
 const Usuarios = lazy(() => import('./pages/Usuarios'))
 const UsuarioDetalhe = lazy(() => import('./pages/UsuarioDetalhe'))
 
@@ -62,9 +60,7 @@ export default function App() {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/solucao" element={<Solucao />} />
-
             <Route path="/login" element={<Login />} />
-            <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/usuarios" element={<Usuarios />} />
             <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
 
