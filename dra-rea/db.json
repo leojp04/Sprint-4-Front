@@ -1,7 +1,7 @@
 {
   "usuarios": [
     {
-      "id": "1",
+      "id": 1,
       "nome": "Caio Martins",
       "nomeCompleto": "Caio Martins",
       "nomeUsuario": "caioM",
@@ -11,7 +11,7 @@
       "avatar": "https://i.pravatar.cc/120?img=1"
     },
     {
-      "id": "2",
+      "id": 2,
       "nome": "Larissa Almeida",
       "nomeCompleto": "Larissa Almeida",
       "nomeUsuario": "lariA",
@@ -21,7 +21,7 @@
       "avatar": "https://i.pravatar.cc/120?img=2"
     },
     {
-      "id": "3",
+      "id": 3,
       "nome": "Thiago Rocha",
       "nomeCompleto": "Thiago Rocha",
       "nomeUsuario": "thiagoR",
@@ -31,16 +31,28 @@
       "avatar": "https://i.pravatar.cc/120?img=3"
     },
     {
-      "id": "b486",
+      "id": 4,
       "nomeCompleto": "Leo",
       "email": "njfuionrbuonbou@fiap.com",
       "password": "123456"
     },
     {
-      "id": "3381",
+      "id": 5,
       "nomeCompleto": "Leo",
       "email": "frferfefwrf@fiap.com.br",
       "password": "123456"
+    },
+    {
+      "id": "a8ec",
+      "nomeCompleto": "sfsfasfdasfd",
+      "email": "leo123@fiap.com.br",
+      "password": "123456"
+    },
+    {
+      "nomeCompleto": "oi",
+      "email": "leo1234@fiap.com.br",
+      "password": "123456",
+      "id": 6
     }
   ]
 }
