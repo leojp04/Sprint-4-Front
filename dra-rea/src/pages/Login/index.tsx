@@ -4,12 +4,22 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
 
-const BASE_URL = (import.meta.env.VITE_API_BASEURL as string | undefined)?.trim() || 'http://localhost:3001'
+const BASE_URL =
+  (import.meta.env.VITE_API_BASEURL as string | undefined)?.trim() || 'http://localhost:3001'
 
 type FormData = {
   nomeCompleto?: string
   email: string
   password: string
+}
+
+type User = {
+  id: string | number
+  email: string
+  password?: string
+  nomeCompleto?: string
+  nome?: string
+  name?: string
 }
 
 export default function LoginPage() {
@@ -20,15 +30,17 @@ export default function LoginPage() {
   const schema = z
     .object({
       nomeCompleto: z.string().optional(),
-      email: z.string({ required_error: 'E-mail é obrigatório' }).email('E-mail inválido'),
-      password: z.string().min(6, 'Senha deve ter ao menos 6 caracteres'),
+      email: z
+        .string({ required_error: 'E-mail é obrigatório.' })
+        .email('Informe um e-mail válido.'),
+      password: z.string().min(6, 'A senha deve ter ao menos 6 caracteres.'),
     })
     .superRefine((data, ctx) => {
       if (mode === 'signup' && !data.nomeCompleto?.trim()) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ['nomeCompleto'],
-          message: 'Nome completo é obrigatório',
+          message: 'Nome completo é obrigatório.',
         })
       }
     })
@@ -40,40 +52,55 @@ export default function LoginPage() {
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({ mode: 'onTouched', resolver: zodResolver(schema) })
 
+  const storeAuthUser = (user: User) => {
+    const authPayload = {
+      id: user.id,
+      email: user.email,
+      name: user.nomeCompleto ?? user.nome ?? user.name ?? '',
+      nomeCompleto: user.nomeCompleto ?? user.nome ?? user.name ?? '',
+    }
+    window.localStorage.setItem('authUser', JSON.stringify(authPayload))
+    window.dispatchEvent(new Event('authUserChanged'))
+  }
+
   async function onSubmit(data: FormData) {
     setFeedback(null)
+
     if (mode === 'login') {
       try {
-        const res = await fetch(`${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`)
-        if (!res.ok) throw new Error('Falha ao buscar usuário')
-        const users = (await res.json()) as Array<any>
+        const response = await fetch(`${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`)
+        if (!response.ok) throw new Error('Falha ao buscar usuário.')
+
+        const users = (await response.json()) as User[]
         if (!users || users.length === 0) {
-          setFeedback('Usuário não encontrado')
+          setFeedback('Usuário não encontrado.')
           return
         }
+
         const user = users[0]
         if ((user.password ?? '') !== data.password) {
-          setFeedback('Senha incorreta')
+          setFeedback('Senha incorreta.')
           return
         }
-        const authUser = { id: user.id, email: user.email, nomeCompleto: user.nomeCompleto ?? user.nome }
-        localStorage.setItem('authUser', JSON.stringify(authUser))
+
+        storeAuthUser(user)
         navigate('/', { replace: true })
-      } catch (e) {
-        const msg = e instanceof Error ? e.message : 'Erro ao efetuar login'
-        setFeedback(msg)
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Erro ao efetuar login.'
+        setFeedback(message)
       }
       return
     }
 
-    // signup
     try {
-      // Verifica se já existe email
-      const existsRes = await fetch(`${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`)
-      if (!existsRes.ok) throw new Error('Falha ao verificar e-mail')
-      const exists = (await existsRes.json()) as Array<any>
+      const existsRes = await fetch(
+        `${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`
+      )
+      if (!existsRes.ok) throw new Error('Falha ao verificar e-mail.')
+
+      const exists = (await existsRes.json()) as User[]
       if (exists && exists.length > 0) {
-        setFeedback('E-mail já cadastrado')
+        setFeedback('E-mail já cadastrado.')
         return
       }
 
@@ -87,21 +114,20 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      if (!createRes.ok) throw new Error('Falha ao cadastrar usuário')
+      if (!createRes.ok) throw new Error('Falha ao cadastrar usuário.')
 
-      // Após cadastrar, volta ao modo login para o usuário entrar
       setFeedback('Cadastro realizado! Entre com seu e-mail e senha.')
       setMode('login')
       reset({ email: data.email, password: '' })
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Erro ao cadastrar'
-      setFeedback(msg)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Erro ao cadastrar usuário.'
+      setFeedback(message)
     }
   }
 
   const toggleMode = () => {
     setFeedback(null)
-    setMode((m) => (m === 'login' ? 'signup' : 'login'))
+    setMode((current) => (current === 'login' ? 'signup' : 'login'))
   }
 
   return (
@@ -116,50 +142,72 @@ export default function LoginPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="bg-white border rounded-xl p-5 shadow-sm">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        className="bg-white border rounded-xl p-5 shadow-sm"
+      >
         {mode === 'signup' && (
           <div className="mb-4">
-            <label htmlFor="nomeCompleto" className="font-semibold">Nome completo *</label>
+            <label htmlFor="nomeCompleto" className="font-semibold">
+              Nome completo *
+            </label>
             <input
               id="nomeCompleto"
-              className={`w-full rounded-lg px-3 py-2 border ${errors.nomeCompleto ? 'border-red-600' : 'border-gray-300'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
+              className={`w-full rounded-lg px-3 py-2 border ${
+                errors.nomeCompleto ? 'border-red-600' : 'border-gray-300'
+              } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
               aria-invalid={errors.nomeCompleto ? 'true' : 'false'}
               {...register('nomeCompleto')}
               autoComplete="name"
             />
             {errors.nomeCompleto && (
-              <p className="text-red-600 text-sm mt-1" role="alert">{errors.nomeCompleto.message}</p>
+              <p className="text-red-600 text-sm mt-1" role="alert">
+                {errors.nomeCompleto.message}
+              </p>
             )}
           </div>
         )}
 
         <div className="mb-4">
-          <label htmlFor="email" className="font-semibold">E-mail *</label>
+          <label htmlFor="email" className="font-semibold">
+            E-mail *
+          </label>
           <input
             id="email"
             type="email"
-            className={`w-full rounded-lg px-3 py-2 border ${errors.email ? 'border-red-600' : 'border-gray-300'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
+            className={`w-full rounded-lg px-3 py-2 border ${
+              errors.email ? 'border-red-600' : 'border-gray-300'
+            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
             aria-invalid={errors.email ? 'true' : 'false'}
             {...register('email')}
             autoComplete="email"
           />
           {errors.email && (
-            <p className="text-red-600 text-sm mt-1" role="alert">{errors.email.message}</p>
+            <p className="text-red-600 text-sm mt-1" role="alert">
+              {errors.email.message}
+            </p>
           )}
         </div>
 
         <div className="mb-4">
-          <label htmlFor="password" className="font-semibold">Senha *</label>
+          <label htmlFor="password" className="font-semibold">
+            Senha *
+          </label>
           <input
             id="password"
             type="password"
-            className={`w-full rounded-lg px-3 py-2 border ${errors.password ? 'border-red-600' : 'border-gray-300'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
+            className={`w-full rounded-lg px-3 py-2 border ${
+              errors.password ? 'border-red-600' : 'border-gray-300'
+            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
             aria-invalid={errors.password ? 'true' : 'false'}
             {...register('password')}
             autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
           />
           {errors.password && (
-            <p className="text-red-600 text-sm mt-1" role="alert">{errors.password.message}</p>
+            <p className="text-red-600 text-sm mt-1" role="alert">
+              {errors.password.message}
+            </p>
           )}
         </div>
 

@@ -1,21 +1,72 @@
-import { NavLink } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 type LinkItem = { to: string; label: string; end?: boolean }
 
 const linkBase =
   'px-3 py-2 text-sm md:text-base rounded-md transition-colors whitespace-nowrap text-[#111827] hover:text-[#a1203a] hover:bg-[#f3e5e5] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#a1203a]'
 
+type AuthUser = {
+  id: string | number
+  name?: string
+  nomeCompleto?: string
+  email?: string
+}
+
+function readAuthUser(): AuthUser | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const value = window.localStorage.getItem('authUser')
+    if (!value) return null
+    return JSON.parse(value) as AuthUser
+  } catch {
+    return null
+  }
+}
+
 export default function Header() {
-  const links: LinkItem[] = [
-    { to: '/', label: 'Inicio', end: true },
+  const navigate = useNavigate()
+  const [authUser, setAuthUser] = useState<AuthUser | null>(() => readAuthUser())
+
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === 'authUser') {
+        setAuthUser(readAuthUser())
+      }
+    }
+
+    const handleAuthChange = () => setAuthUser(readAuthUser())
+
+    window.addEventListener('storage', handleStorage)
+    window.addEventListener('authUserChanged', handleAuthChange)
+
+    return () => {
+      window.removeEventListener('storage', handleStorage)
+      window.removeEventListener('authUserChanged', handleAuthChange)
+    }
+  }, [])
+
+  const handleLogout = useCallback(() => {
+    window.localStorage.removeItem('authUser')
+    window.dispatchEvent(new Event('authUserChanged'))
+    navigate('/login', { replace: true })
+  }, [navigate])
+
+  const baseLinks: LinkItem[] = [
+    { to: '/', label: 'Início', end: true },
     { to: '/sobre', label: 'Sobre' },
     { to: '/integrantes', label: 'Integrantes' },
-    { to: '/usuarios', label: 'Usuarios' },
+    { to: '/usuarios', label: 'Usuários' },
     { to: '/faq', label: 'FAQ' },
     { to: '/contato', label: 'Contato' },
-    { to: '/solucao', label: 'Solucao' },
-    { to: '/login', label: 'Login' },
+    { to: '/solucao', label: 'Solução' },
   ]
+
+  const conditionalLinks: LinkItem[] = authUser
+    ? [{ to: '/perfil', label: 'Perfil' }]
+    : [{ to: '/login', label: 'Login' }]
+
+  const navigationLinks = [...baseLinks, ...conditionalLinks]
 
   return (
     <header className="bg-white text-[#111827] border-b border-[#f3e5e5] sticky top-0 z-40">
@@ -27,10 +78,10 @@ export default function Header() {
           </div>
 
           <nav
-            aria-label="Navegacao principal"
+            aria-label="Navegação principal"
             className="flex flex-1 items-center justify-center gap-2 md:gap-4 flex-nowrap whitespace-nowrap overflow-x-auto min-w-0"
           >
-            {links.map((link) => (
+            {navigationLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
@@ -44,6 +95,16 @@ export default function Header() {
                 {link.label}
               </NavLink>
             ))}
+
+            {authUser && (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className={`${linkBase} border border-transparent hover:border-[#a1203a]/40`}
+              >
+                Sair
+              </button>
+            )}
           </nav>
 
           <div className="flex-none" aria-hidden="true" />
