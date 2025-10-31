@@ -41,6 +41,24 @@
       "nomeCompleto": "Leo",
       "email": "frferfefwrf@fiap.com.br",
       "password": "123456"
+    },
+    {
+      "id": "9a6e",
+      "nomeCompleto": "Leonardo",
+      "email": "Fiap@fiap.com",
+      "password": "123456789"
+    },
+    {
+      "id": "6d78",
+      "nomeCompleto": "Leo",
+      "email": "leo123@fiap.com",
+      "password": "123455"
+    },
+    {
+      "id": "d27c",
+      "nomeCompleto": "Leonardo",
+      "email": "teste@fiap.com.br",
+      "password": "123456"
     }
   ]
 }

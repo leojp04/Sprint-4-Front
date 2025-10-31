@@ -1,11 +1,21 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import Alert from '../components/Alert'
 
+const BASE_URL =
+  (import.meta.env.VITE_API_BASEURL as string | undefined)?.trim() || 'http://localhost:3001'
+
 type Feedback = { type: 'success' | 'error'; message: string }
+
+type AuthUser = {
+  id: string | number
+  name?: string
+  nomeCompleto?: string
+  email?: string
+}
 
 type FormData = {
   nomeCompleto: string
@@ -16,34 +26,35 @@ type FormData = {
 
 const schema = z.object({
   nomeCompleto: z
-    .string({ required_error: 'Nome completo e obrigatorio.' })
+    .string({ required_error: 'Nome completo é obrigatório.' })
     .trim()
     .min(3, 'Informe ao menos 3 caracteres.'),
   email: z.string().email(),
   novaSenha: z
-    .string({ required_error: 'Nova senha e obrigatoria.' })
-    .min(6, 'Senha deve ter ao menos 6 caracteres.'),
+    .string({ required_error: 'Nova senha é obrigatória.' })
+    .min(6, 'A nova senha deve ter ao menos 6 caracteres.'),
   confirmarSenha: z
     .string({ required_error: 'Confirme a nova senha.' })
-    .min(6, 'Senha deve ter ao menos 6 caracteres.'),
+    .min(6, 'A confirmação deve ter ao menos 6 caracteres.'),
 })
 
 const inputBaseClasses =
   'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm sm:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 transition-shadow disabled:opacity-80 disabled:cursor-not-allowed'
 
+function getAuthUser(): AuthUser | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const value = window.localStorage.getItem('authUser')
+    if (!value) return null
+    return JSON.parse(value) as AuthUser
+  } catch {
+    return null
+  }
+}
+
 export default function PerfilUsuario() {
   const [feedback, setFeedback] = useState<Feedback | null>(null)
-
-  const storedUser = useMemo(() => {
-    try {
-      if (typeof window === 'undefined') return null
-      const value = window.localStorage.getItem('authUser')
-      if (!value) return null
-      return JSON.parse(value) as { nomeCompleto?: string; email?: string }
-    } catch {
-      return null
-    }
-  }, [])
+  const [authUser, setAuthUser] = useState<AuthUser | null>(() => getAuthUser())
 
   const {
     register,
@@ -64,38 +75,88 @@ export default function PerfilUsuario() {
   })
 
   useEffect(() => {
-    if (storedUser) {
-      setValue('nomeCompleto', storedUser.nomeCompleto ?? '')
-      setValue('email', storedUser.email ?? '')
-    }
-  }, [setValue, storedUser])
+    const handleAuthChange = () => setAuthUser(getAuthUser())
 
-  const handleSave = handleSubmit((data) => {
+    window.addEventListener('storage', handleAuthChange)
+    window.addEventListener('authUserChanged', handleAuthChange)
+
+    return () => {
+      window.removeEventListener('storage', handleAuthChange)
+      window.removeEventListener('authUserChanged', handleAuthChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!authUser) return
+    setValue('nomeCompleto', authUser.nomeCompleto ?? authUser.name ?? '')
+    setValue('email', authUser.email ?? '')
+  }, [authUser, setValue])
+
+  const handleSave = handleSubmit(async (data) => {
     setFeedback(null)
+
+    if (!authUser?.id) {
+      setFeedback({
+        type: 'error',
+        message: 'Não foi possível localizar os dados do usuário autenticado.',
+      })
+      return
+    }
 
     if (data.novaSenha !== data.confirmarSenha) {
       setError('confirmarSenha', {
         type: 'validate',
-        message: 'As senhas digitadas nao coincidem.',
+        message: 'As senhas digitadas não coincidem.',
       })
-      setFeedback({ type: 'error', message: 'As senhas digitadas nao coincidem.' })
+      setFeedback({ type: 'error', message: 'As senhas digitadas não coincidem.' })
       return
     }
 
-    // Simula salvamento com sucesso
-    setFeedback({ type: 'success', message: 'Dados atualizados com sucesso!' })
-    reset({
+    const payload = {
+      password: data.novaSenha,
       nomeCompleto: data.nomeCompleto,
-      email: data.email,
-      novaSenha: '',
-      confirmarSenha: '',
-    })
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/usuarios/${authUser.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        throw new Error('Não foi possível atualizar os dados. Tente novamente.')
+      }
+
+      const updatedUser: AuthUser = {
+        ...authUser,
+        nomeCompleto: data.nomeCompleto,
+        name: data.nomeCompleto,
+      }
+
+      window.localStorage.setItem('authUser', JSON.stringify(updatedUser))
+      window.dispatchEvent(new Event('authUserChanged'))
+      setAuthUser(updatedUser)
+
+      setFeedback({ type: 'success', message: 'Dados atualizados com sucesso!' })
+
+      reset({
+        nomeCompleto: data.nomeCompleto,
+        email: updatedUser.email ?? '',
+        novaSenha: '',
+        confirmarSenha: '',
+      })
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Ocorreu um erro ao salvar as alterações.'
+      setFeedback({ type: 'error', message })
+    }
   })
 
   return (
     <section className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-8">
-        Perfil do Usu\u00e1rio
+        Perfil do Usuário
       </h1>
 
       <div className="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 sm:p-8">
@@ -176,10 +237,11 @@ export default function PerfilUsuario() {
             disabled={isSubmitting}
             className="w-full rounded-lg bg-[#a1203a] px-4 py-2 font-semibold text-white transition-colors duration-200 hover:bg-[#8b1b33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#a1203a] disabled:opacity-80"
           >
-            Salvar altera\u00e7\u00f5es
+            Salvar alterações
           </button>
         </form>
       </div>
     </section>
   )
 }
+

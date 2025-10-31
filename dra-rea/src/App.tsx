@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
+import RequireAuth from './components/RequireAuth'
 import WatsonChat from './components/WatsonChat'
 
 const Home = lazy(() => import('./pages/Home'))
@@ -21,23 +22,23 @@ export default function App() {
 
   useEffect(() => {
     const titles: Record<string, string> = {
-      '/': 'IMREA Digital | Reabilitacao com acolhimento',
+      '/': 'IMREA Digital | Reabilitação com acolhimento',
       '/sobre': 'Sobre | IMREA Digital',
       '/integrantes': 'Integrantes | IMREA Digital',
       '/faq': 'FAQ | IMREA Digital',
       '/contato': 'Contato | IMREA Digital',
-      '/solucao': 'Solucao | IMREA Digital',
+      '/solucao': 'Solução | IMREA Digital',
       '/login': 'Login | IMREA Digital',
       '/cadastro': 'Cadastro | IMREA Digital',
-      '/usuarios': 'Usuarios | IMREA Digital',
-      '/perfil': 'Perfil do Usuario | IMREA Digital',
+      '/usuarios': 'Usuários | IMREA Digital',
+      '/perfil': 'Perfil do Usuário | IMREA Digital',
     }
     if (location.pathname.startsWith('/integrantes/')) {
       document.title = 'Membro | IMREA Digital'
       return
     }
     if (location.pathname.startsWith('/usuarios/')) {
-      document.title = 'Detalhes do Usuario | IMREA Digital'
+      document.title = 'Detalhes do Usuário | IMREA Digital'
       return
     }
     document.title = titles[location.pathname] ?? 'IMREA Digital'
@@ -58,7 +59,14 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/usuarios" element={<Usuarios />} />
             <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
-            <Route path="/perfil" element={<PerfilUsuario />} />
+            <Route
+              path="/perfil"
+              element={
+                <RequireAuth>
+                  <PerfilUsuario />
+                </RequireAuth>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
@@ -67,4 +75,3 @@ export default function App() {
     </>
   )
 }
-
