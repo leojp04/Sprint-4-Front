@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
+import RequireAuth from './components/RequireAuth'
 import WatsonChat from './components/WatsonChat'
 
 const Home = lazy(() => import('./pages/Home'))
@@ -14,6 +15,7 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 const Login = lazy(() => import('./pages/Login'))
 const Usuarios = lazy(() => import('./pages/Usuarios'))
 const UsuarioDetalhe = lazy(() => import('./pages/UsuarioDetalhe'))
+const PerfilUsuario = lazy(() => import('./pages/PerfilUsuario'))
 
 export default function App() {
   const location = useLocation()
@@ -29,19 +31,22 @@ export default function App() {
       '/login': 'Login | IMREA Digital',
       '/cadastro': 'Cadastro | IMREA Digital',
       '/usuarios': 'Usuários | IMREA Digital',
+      '/perfil': 'Perfil do Usuário | IMREA Digital',
     }
     if (location.pathname.startsWith('/integrantes/')) {
-      document.title = 'Membro | IMREA Digital'; return
+      document.title = 'Membro | IMREA Digital'
+      return
     }
     if (location.pathname.startsWith('/usuarios/')) {
-      document.title = 'Detalhes do Usuário | IMREA Digital'; return
+      document.title = 'Detalhes do Usuário | IMREA Digital'
+      return
     }
     document.title = titles[location.pathname] ?? 'IMREA Digital'
   }, [location.pathname])
 
   return (
     <>
-      <Suspense fallback={<div className="p-8 text-center">Carregando…</div>}>
+      <Suspense fallback={<div className="p-8 text-center">Carregando...</div>}>
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
@@ -54,7 +59,14 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/usuarios" element={<Usuarios />} />
             <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
-
+            <Route
+              path="/perfil"
+              element={
+                <RequireAuth>
+                  <PerfilUsuario />
+                </RequireAuth>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
