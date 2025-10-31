@@ -14,34 +14,38 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 const Login = lazy(() => import('./pages/Login'))
 const Usuarios = lazy(() => import('./pages/Usuarios'))
 const UsuarioDetalhe = lazy(() => import('./pages/UsuarioDetalhe'))
+const PerfilUsuario = lazy(() => import('./pages/PerfilUsuario'))
 
 export default function App() {
   const location = useLocation()
 
   useEffect(() => {
     const titles: Record<string, string> = {
-      '/': 'IMREA Digital | Reabilitação com acolhimento',
+      '/': 'IMREA Digital | Reabilitacao com acolhimento',
       '/sobre': 'Sobre | IMREA Digital',
       '/integrantes': 'Integrantes | IMREA Digital',
       '/faq': 'FAQ | IMREA Digital',
       '/contato': 'Contato | IMREA Digital',
-      '/solucao': 'Solução | IMREA Digital',
+      '/solucao': 'Solucao | IMREA Digital',
       '/login': 'Login | IMREA Digital',
       '/cadastro': 'Cadastro | IMREA Digital',
-      '/usuarios': 'Usuários | IMREA Digital',
+      '/usuarios': 'Usuarios | IMREA Digital',
+      '/perfil': 'Perfil do Usuario | IMREA Digital',
     }
     if (location.pathname.startsWith('/integrantes/')) {
-      document.title = 'Membro | IMREA Digital'; return
+      document.title = 'Membro | IMREA Digital'
+      return
     }
     if (location.pathname.startsWith('/usuarios/')) {
-      document.title = 'Detalhes do Usuário | IMREA Digital'; return
+      document.title = 'Detalhes do Usuario | IMREA Digital'
+      return
     }
     document.title = titles[location.pathname] ?? 'IMREA Digital'
   }, [location.pathname])
 
   return (
     <>
-      <Suspense fallback={<div className="p-8 text-center">Carregando…</div>}>
+      <Suspense fallback={<div className="p-8 text-center">Carregando...</div>}>
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
@@ -54,7 +58,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/usuarios" element={<Usuarios />} />
             <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
-
+            <Route path="/perfil" element={<PerfilUsuario />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
@@ -63,3 +67,4 @@ export default function App() {
     </>
   )
 }
+
