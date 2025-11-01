@@ -56,6 +56,7 @@ export default function LoginPage() {
     const authPayload = {
       id: user.id,
       email: user.email,
+      password: user.password ?? '',
       name: user.nomeCompleto ?? user.nome ?? user.name ?? '',
       nomeCompleto: user.nomeCompleto ?? user.nome ?? user.name ?? '',
     }
