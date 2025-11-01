@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useMemo, useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
@@ -7,10 +7,13 @@ import { useNavigate } from 'react-router-dom'
 const BASE_URL =
   (import.meta.env.VITE_API_BASEURL as string | undefined)?.trim() || 'http://localhost:3001'
 
+const CPF_REGEX = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
+
 type FormData = {
   nomeCompleto?: string
   email: string
   password: string
+  cpf?: string
 }
 
 type User = {
@@ -20,35 +23,63 @@ type User = {
   nomeCompleto?: string
   nome?: string
   name?: string
+  cpf?: string
 }
+
+const formatCpf = (value: string) =>
+  value
+    .replace(/\D/g, '')
+    .slice(0, 11)
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
 
 export default function LoginPage() {
   const [mode, setMode] = useState<'login' | 'signup'>('login')
   const [feedback, setFeedback] = useState<string | null>(null)
   const navigate = useNavigate()
 
-  const schema = z
-    .object({
-      nomeCompleto: z.string().optional(),
-      email: z
-        .string({ required_error: 'E-mail é obrigatório.' })
-        .email('Informe um e-mail válido.'),
-      password: z.string().min(6, 'A senha deve ter ao menos 6 caracteres.'),
-    })
-    .superRefine((data, ctx) => {
-      if (mode === 'signup' && !data.nomeCompleto?.trim()) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ['nomeCompleto'],
-          message: 'Nome completo é obrigatório.',
+  const schema = useMemo(
+    () =>
+      z
+        .object({
+          nomeCompleto: z
+            .string()
+            .optional()
+            .refine((value) => !value || value.trim().length >= 3, 'Informe o nome completo.'),
+          email: z
+            .string({ required_error: 'E-mail obrigatorio.' })
+            .email('Informe um e-mail valido.'),
+          password: z.string().min(6, 'A senha deve ter ao menos 6 caracteres.'),
+          cpf: z
+            .string()
+            .optional()
+            .refine((value) => !value || CPF_REGEX.test(value), 'CPF invalido.'),
         })
-      }
-    })
+        .superRefine((data, ctx) => {
+          if (mode === 'signup' && !data.nomeCompleto?.trim()) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['nomeCompleto'],
+              message: 'Nome completo obrigatorio.',
+            })
+          }
+          if (mode === 'signup' && !data.cpf) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['cpf'],
+              message: 'CPF obrigatorio.',
+            })
+          }
+        }),
+    [mode],
+  )
 
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({ mode: 'onTouched', resolver: zodResolver(schema) })
 
@@ -57,6 +88,7 @@ export default function LoginPage() {
       id: user.id,
       email: user.email,
       password: user.password ?? '',
+      cpf: user.cpf ?? '',
       name: user.nomeCompleto ?? user.nome ?? user.name ?? '',
       nomeCompleto: user.nomeCompleto ?? user.nome ?? user.name ?? '',
     }
@@ -69,12 +101,14 @@ export default function LoginPage() {
 
     if (mode === 'login') {
       try {
-        const response = await fetch(`${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`)
-        if (!response.ok) throw new Error('Falha ao buscar usuário.')
+        const response = await fetch(
+          `${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`,
+        )
+        if (!response.ok) throw new Error('Falha ao buscar usuario.')
 
         const users = (await response.json()) as User[]
         if (!users || users.length === 0) {
-          setFeedback('Usuário não encontrado.')
+          setFeedback('Usuario nao encontrado.')
           return
         }
 
@@ -95,13 +129,13 @@ export default function LoginPage() {
 
     try {
       const existsRes = await fetch(
-        `${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`
+        `${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`,
       )
       if (!existsRes.ok) throw new Error('Falha ao verificar e-mail.')
 
       const exists = (await existsRes.json()) as User[]
       if (exists && exists.length > 0) {
-        setFeedback('E-mail já cadastrado.')
+        setFeedback('E-mail ja cadastrado.')
         return
       }
 
@@ -109,19 +143,20 @@ export default function LoginPage() {
         nomeCompleto: data.nomeCompleto,
         email: data.email,
         password: data.password,
+        cpf: data.cpf,
       }
       const createRes = await fetch(`${BASE_URL}/usuarios`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      if (!createRes.ok) throw new Error('Falha ao cadastrar usuário.')
+      if (!createRes.ok) throw new Error('Falha ao cadastrar usuario.')
 
       setFeedback('Cadastro realizado! Entre com seu e-mail e senha.')
       setMode('login')
-      reset({ email: data.email, password: '' })
+      reset({ email: data.email, password: '', cpf: data.cpf })
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro ao cadastrar usuário.'
+      const message = error instanceof Error ? error.message : 'Erro ao cadastrar usuario.'
       setFeedback(message)
     }
   }
@@ -149,25 +184,55 @@ export default function LoginPage() {
         className="bg-white border rounded-xl p-5 shadow-sm"
       >
         {mode === 'signup' && (
-          <div className="mb-4">
-            <label htmlFor="nomeCompleto" className="font-semibold">
-              Nome completo *
-            </label>
-            <input
-              id="nomeCompleto"
-              className={`w-full rounded-lg px-3 py-2 border ${
-                errors.nomeCompleto ? 'border-red-600' : 'border-gray-300'
-              } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
-              aria-invalid={errors.nomeCompleto ? 'true' : 'false'}
-              {...register('nomeCompleto')}
-              autoComplete="name"
-            />
-            {errors.nomeCompleto && (
-              <p className="text-red-600 text-sm mt-1" role="alert">
-                {errors.nomeCompleto.message}
-              </p>
-            )}
-          </div>
+          <>
+            <div className="mb-4">
+              <label htmlFor="nomeCompleto" className="font-semibold">
+                Nome completo *
+              </label>
+              <input
+                id="nomeCompleto"
+                className={`w-full rounded-lg px-3 py-2 border ${
+                  errors.nomeCompleto ? 'border-red-600' : 'border-gray-300'
+                } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
+                aria-invalid={errors.nomeCompleto ? 'true' : 'false'}
+                {...register('nomeCompleto')}
+                autoComplete="name"
+              />
+              {errors.nomeCompleto && (
+                <p className="text-red-600 text-sm mt-1" role="alert">
+                  {errors.nomeCompleto.message}
+                </p>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="cpf" className="font-semibold">
+                CPF *
+              </label>
+              <Controller
+                control={control}
+                name="cpf"
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    id="cpf"
+                    inputMode="numeric"
+                    maxLength={14}
+                    className={`w-full rounded-lg px-3 py-2 border ${
+                      errors.cpf ? 'border-red-600' : 'border-gray-300'
+                    } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand`}
+                    aria-invalid={errors.cpf ? 'true' : 'false'}
+                    onChange={(event) => field.onChange(formatCpf(event.target.value))}
+                  />
+                )}
+              />
+              {errors.cpf && (
+                <p className="text-red-600 text-sm mt-1" role="alert">
+                  {errors.cpf.message}
+                </p>
+              )}
+            </div>
+          </>
         )}
 
         <div className="mb-4">
@@ -228,14 +293,14 @@ export default function LoginPage() {
         <p className="mt-3 text-sm text-ink">
           {mode === 'login' ? (
             <>
-              Não tem conta?{' '}
+              Nao tem conta?{' '}
               <button type="button" onClick={toggleMode} className="text-brand underline">
                 Cadastre-se
               </button>
             </>
           ) : (
             <>
-              Já tem conta?{' '}
+              Ja tem conta?{' '}
               <button type="button" onClick={toggleMode} className="text-brand underline">
                 Entrar
               </button>
@@ -246,4 +311,3 @@ export default function LoginPage() {
     </section>
   )
 }
-

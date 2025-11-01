@@ -11,14 +11,15 @@ type AuthUser = {
   name?: string
   nomeCompleto?: string
   email?: string
+  cpf?: string
 }
 
 function readAuthUser(): AuthUser | null {
   if (typeof window === 'undefined') return null
   try {
-    const value = window.localStorage.getItem('authUser')
-    if (!value) return null
-    return JSON.parse(value) as AuthUser
+    const raw = window.localStorage.getItem('authUser')
+    if (!raw) return null
+    return JSON.parse(raw) as AuthUser
   } catch {
     return null
   }
@@ -53,19 +54,18 @@ export default function Header() {
   }, [navigate])
 
   const baseLinks: LinkItem[] = [
-    { to: '/', label: 'Início', end: true },
+    { to: '/', label: 'Inicio', end: true },
     { to: '/sobre', label: 'Sobre' },
     { to: '/integrantes', label: 'Integrantes' },
     { to: '/faq', label: 'FAQ' },
     { to: '/contato', label: 'Contato' },
-    { to: '/solucao', label: 'Solução' },
+    { to: '/solucao', label: 'Solucao' },
+    { to: '/agendar', label: 'Agendar' },
   ]
 
-  const conditionalLinks: LinkItem[] = authUser
-    ? [{ to: '/perfil', label: 'Perfil' }]
-    : [{ to: '/login', label: 'Login' }]
-
-  const navigationLinks = [...baseLinks, ...conditionalLinks]
+  const navigationLinks: LinkItem[] = authUser
+    ? [...baseLinks, { to: '/perfil', label: 'Perfil' }]
+    : [...baseLinks, { to: '/login', label: 'Login' }]
 
   return (
     <header className="bg-white text-[#111827] border-b border-[#f3e5e5] sticky top-0 z-40">
@@ -77,7 +77,7 @@ export default function Header() {
           </div>
 
           <nav
-            aria-label="Navegação principal"
+            aria-label="Navegacao principal"
             className="flex flex-1 items-center justify-center gap-2 md:gap-4 flex-nowrap whitespace-nowrap overflow-x-auto min-w-0"
           >
             {navigationLinks.map((link) => (

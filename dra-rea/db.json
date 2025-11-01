@@ -8,6 +8,7 @@
       "username": "caioM",
       "email": "caio.martins@fiap.com",
       "password": "123456",
+      "cpf": "123.456.789-00",
       "avatar": "https://i.pravatar.cc/120?img=1"
     },
     {
@@ -18,6 +19,7 @@
       "username": "lariA",
       "email": "larissa.almeida@fiap.com",
       "password": "123456",
+      "cpf": "234.567.890-11",
       "avatar": "https://i.pravatar.cc/120?img=2"
     },
     {
@@ -28,44 +30,110 @@
       "username": "thiagoR",
       "email": "thiago.rocha@fiap.com",
       "password": "123456",
+      "cpf": "345.678.901-22",
       "avatar": "https://i.pravatar.cc/120?img=3"
     },
     {
       "id": 4,
       "nomeCompleto": "Leo",
       "email": "njfuionrbuonbou@fiap.com",
-      "password": "123456"
+      "password": "123456",
+      "cpf": "456.789.012-33"
     },
     {
       "id": 5,
       "nomeCompleto": "Leo",
       "email": "frferfefwrf@fiap.com.br",
-      "password": "123456"
+      "password": "123456",
+      "cpf": "567.890.123-44"
     },
     {
-
       "id": "9a6e",
       "nomeCompleto": "Leonardo",
       "email": "Fiap@fiap.com",
-      "password": "123456789"
+      "password": "123456789",
+      "cpf": "678.901.234-55"
     },
     {
       "id": "6d78",
       "nomeCompleto": "Leo",
       "email": "leo123@fiap.com",
-      "password": "123455"
+      "password": "123455",
+      "cpf": "789.012.345-66"
     },
     {
       "id": "d27c",
       "nomeCompleto": "Leonardo",
       "email": "teste@fiap.com.br",
-      "password": "123456"
+      "password": "123456",
+      "cpf": "890.123.456-77"
     },
     {
+      "id": "Y9AYQTb",
       "nomeCompleto": "Lucas",
       "email": "Lucas@fiap.com",
       "password": "123456",
-      "id": "Y9AYQTb"
+      "cpf": "901.234.567-88"
+    },
+    {
+      "nomeCompleto": "Leonardo Jose Pereira",
+      "email": "leo123@fiap.com.br",
+      "password": "987654",
+      "cpf": "987.654.321-00",
+      "id": 6
+    },
+    {
+      "nomeCompleto": "Fernanda Ribeiro",
+      "email": "Fernanda123@fiap.com",
+      "password": "123456",
+      "cpf": "789.456.123-00",
+      "id": 7
+    }
+  ],
+  "consultas": [
+    {
+      "id": 1,
+      "cpf": "123.456.789-00",
+      "nomePaciente": "Caio Martins",
+      "email": "caio.martins@fiap.com",
+      "especialidade": "fisioterapia",
+      "tipoTerapia": "individual",
+      "diaSemana": "quarta-feira",
+      "dataISO": "2025-11-10T14:00",
+      "status": "marcada"
+    },
+    {
+      "status": "marcada",
+      "cpf": "123.456.789-01",
+      "nomePaciente": "Leonardo",
+      "email": "Lucas@fiap.com",
+      "especialidade": "ortopedia",
+      "tipoTerapia": "individual",
+      "diaSemana": "terca-feira",
+      "dataISO": "2026-02-19T08:00",
+      "id": 2
+    },
+    {
+      "status": "marcada",
+      "cpf": "987.654.321-00",
+      "nomePaciente": "Leonardo Jose Pereira",
+      "email": "leo123@fiap.com.br",
+      "especialidade": "fisioterapia",
+      "tipoTerapia": "individual",
+      "diaSemana": "sexta-feira",
+      "dataISO": "2025-12-10T08:05",
+      "id": 3
+    },
+    {
+      "status": "cancelada",
+      "cpf": "789.456.123-00",
+      "nomePaciente": "Fernanda Ribeiro",
+      "email": "Fernanda123@fiap.com",
+      "especialidade": "fisioterapia",
+      "tipoTerapia": "individual",
+      "diaSemana": "sexta-feira",
+      "dataISO": "2025-12-01T08:05",
+      "id": 4
     }
   ]
 }
