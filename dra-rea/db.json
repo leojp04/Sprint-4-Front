@@ -59,6 +59,12 @@
       "nomeCompleto": "Leonardo",
       "email": "teste@fiap.com.br",
       "password": "123456"
+    },
+    {
+      "nomeCompleto": "Lucas",
+      "email": "Lucas@fiap.com",
+      "password": "123456",
+      "id": "Y9AYQTb"
     }
   ]
 }

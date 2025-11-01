@@ -56,7 +56,6 @@ export default function Header() {
     { to: '/', label: 'Início', end: true },
     { to: '/sobre', label: 'Sobre' },
     { to: '/integrantes', label: 'Integrantes' },
-    { to: '/usuarios', label: 'Usuários' },
     { to: '/faq', label: 'FAQ' },
     { to: '/contato', label: 'Contato' },
     { to: '/solucao', label: 'Solução' },
@@ -113,4 +112,3 @@ export default function Header() {
     </header>
   )
 }
-
