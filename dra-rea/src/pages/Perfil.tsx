@@ -435,8 +435,7 @@ export default function Perfil() {
                 </header>
 
                 <p className="text-sm text-[#4b5563]">
-                  {consulta.tipoTerapia.charAt(0).toUpperCase() + consulta.tipoTerapia.slice(1)} -{' '}
-                  {consulta.diaSemana}
+                  {consulta.tipoTerapia.charAt(0).toUpperCase() + consulta.tipoTerapia.slice(1)}
                 </p>
                 <p className="text-sm text-[#111827] font-medium">{formatDateTime(consulta.dataISO)}</p>
 
