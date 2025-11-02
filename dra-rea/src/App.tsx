@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 
 import Layout from './components/Layout'
 import RequireAuth from './components/RequireAuth'
@@ -55,6 +55,7 @@ export default function App() {
       <Suspense fallback={<div className="p-8 text-center">Carregando...</div>}>
         <Routes>
           <Route element={<Layout />}>
+            <Route path="/home" element={<Navigate to="/" replace />} />
             <Route path="/" element={<Home />} />
             <Route path="/sobre" element={<Sobre />} />
             <Route path="/integrantes" element={<Integrantes />} />

@@ -5,8 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import Alert from '../components/Alert'
 
-const BASE_URL =
-  (import.meta.env.VITE_API_BASEURL as string | undefined)?.trim() || 'http://localhost:3001'
+const BASE_URL = import.meta.env.VITE_API_URL?.trim()
+
+if (!BASE_URL) {
+  throw new Error(
+    'VITE_API_URL não definida; configure o arquivo .env antes de acessar a página de perfil.',
+  )
+}
 
 type Feedback = { type: 'success' | 'error'; message: string }
 
