@@ -15,7 +15,7 @@ export function useApi<T>(fn: () => Promise<T>, deps: unknown[] = []) {
         if (active) setState({ data: null, loading: false, error: msg })
       })
     return () => { active = false }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, deps)
 
   return state

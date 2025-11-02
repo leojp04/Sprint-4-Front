@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 export default function Solucao() {
   return (
     <section className="max-w-4xl mx-auto px-4" aria-labelledby="titulo-solucao">
-      {/* Título */}
+
       <h1
         id="titulo-solucao"
         className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-center mb-8"
@@ -11,7 +11,6 @@ export default function Solucao() {
         Nossa Solução
       </h1>
 
-      {/* Introdução */}
       <p className="text-gray-800 leading-relaxed mb-4 text-center">
         O <strong>IMREA Digital</strong> foi criado para facilitar o acesso a informações e aos
         serviços de reabilitação oferecidos pelo Instituto de Medicina Física e Reabilitação do
@@ -25,7 +24,6 @@ export default function Solucao() {
         processos do dia a dia.
       </p>
 
-      {/* Imagem otimizada */}
       <div className="text-center mb-8">
         <img
           src="/Dra_REA.png"
@@ -41,7 +39,6 @@ export default function Solucao() {
         </p>
       </div>
 
-      {/* Funcionalidades (caixa destacada) */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 md:p-6 mb-8" aria-describedby="legenda-dra-rea">
         <h2 className="text-2xl font-bold tracking-tight text-center mb-4">
           Funcionalidades da Dra. REA
@@ -54,7 +51,6 @@ export default function Solucao() {
         </ul>
       </div>
 
-      {/* Impacto + CTAs */}
       <div className="text-center">
         <h2 className="text-xl font-bold tracking-tight leading-snug mb-3">
           Impacto esperado
