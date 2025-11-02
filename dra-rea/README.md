@@ -1,95 +1,70 @@
-# IMREA Digital — Sprint 3 (Front-end Design Engineering)
+﻿# IMREA Digital — Sprint 4 (Front-end Design Engineering)
 
-SPA desenvolvida em **React 19 + Vite + TypeScript**, utilizando **Tailwind 4**, **React Hook Form + Zod**, **React Router** e **json-server** para simulação de API.
-
-
-
-## 🔧 Como rodar o projeto (local)
-
-
-# 1) instalar dependências
-npm install
-
-# 2) rodar em desenvolvimento
-npm run dev
-# abre em http://localhost:5173
-
-# 3) build de produção + preview
-# (no PowerShell antigo use ; em vez de &&)
-npm run build && npm run preview
-# ou:
-npm run build; npm run preview
-
+Aplicação SPA desenvolvida para o desafio IMREA Digital, com foco em acessibilidade, responsividade e integração a serviços de agendamento. O front-end foi construído em **React 19 + Vite + TypeScript**, estilizado com **Tailwind CSS 4** e validado com **React Hook Form + Zod**.
 
 ## Tecnologias
 - React 19
-- Vite
-- TypeScript
+- Vite 5
+- TypeScript 5
 - Tailwind CSS 4
-- React Router
+- React Router DOM 7
 - React Hook Form + Zod
-- json-server
 - ESLint
 
+## Variáveis de Ambiente
+Crie um arquivo `.env` na raiz de `dra-rea/` com:
+```bash
+VITE_API_URL=https://api-front-cyke.onrender.com
+```
+Esta URL aponta para o mock da API publicado no Render (json-server). Para usar outro backend, substitua pelo endpoint desejado antes de rodar o projeto.
+
+## Como rodar localmente
+```bash
+cd dra-rea
+npm install
+npm run dev
+```
+A aplicação ficará disponível em `http://localhost:5173`.
+
+Para validar o build de produção:
+```bash
+npm run build
+npm run preview
+```
+
+## Build & Deploy
+- Produção (Vercel): https://sprint-4-front-ywbf.vercel.app/
+- Preview local: `npm run build && npm run preview`
+- Base da API utilizada em produção: https://api-front-cyke.onrender.com
+
+## Estrutura de pastas
+```
+src/
+  assets/
+  components/
+  data/
+  hooks/
+  pages/
+  services/
+  types/
+  App.tsx
+  main.tsx
+  routes.ts
+  index.css
+```
 
 ## Integrantes
 - **Leonardo José Pereira** — RM **563065** — 1TDSPW  
+  GitHub: https://github.com/leojp04 · LinkedIn: https://www.linkedin.com/in/leonardo-pereira-adm
 - **Fabricio Henrique Pereira** — RM **563237** — 1TDSPW  
-- **Icaro José dos Santos** — RM **562403** — 1TDSPW  
+  GitHub: https://github.com/Fabriciopereira-sp · LinkedIn: https://www.linkedin.com/in/fabrício-henrique-pereira-3aa94933b/
+- **Ícaro José dos Santos** — RM **562403** — 1TDSPW  
+  GitHub: https://github.com/Icaro-Jose09 · LinkedIn: https://www.linkedin.com/in/icaro-jose-jose-96b651324
 
-## Imagens e Ícones do Projeto
-- `/public/IMREA.png` (logotipo)
-- `/public/Dra_REA.png` (ilustração da assistente)
-- `/public/integrante1.jpg`, `/public/integrante2.jpg`, `/public/integrante3.jpg`
+## API Mock
+Mock publicado no Render: https://api-front-cyke.onrender.com  
+Repositório do mock: https://github.com/leojp04/API-Front  
+Repositório do front: https://github.com/leojp04/Sprint-4-Front
 
-## Estrutura de Pastas 
-```
-dra-rea/
-├── public/
-│   ├── IMREA.png
-│   ├── Dra_REA.png
-│   ├── integrante1.jpg
-│   ├── integrante2.jpg
-│   ├── integrante3.jpg
-│   ├── manifest.webmanifest
-│   ├── robots.txt
-│   └── sitemap.xml
-├── src/
-│   ├── components/
-│   │   ├── BackToTop.tsx
-│   │   ├── Footer.tsx
-│   │   ├── Header.tsx
-│   │   ├── Layout.tsx
-│   │   ├── MembroCard.tsx
-│   │   └── WatsonChat.tsx
-│   ├── data/
-│   │   └── membros.ts
-│   ├── pages/
-│   │   ├── Home.tsx
-│   │   ├── Sobre.tsx
-│   │   ├── Integrantes.tsx
-│   │   ├── Membro.tsx         
-│   │   ├── FAQ.tsx
-│   │   ├── Contato.tsx        
-│   │   ├── Solucao.tsx
-│   │   └── NotFound.tsx
-│   ├── App.tsx
-│   ├── main.tsx
-│   ├── index.css
-│   └── vite-env.d.ts
-├── index.html
-├── package.json
-├── postcss.config.js
-├── tailwind.config.js
-├── tsconfig.json
-└── vite.config.ts
-
-```
-
-## Link do GitHub 
-- **URL:** https://github.com/leojp04/Sprint-4-Front.git
-- **URL:** https://github.com/leojp04/Sprint-4-Front
-
-## Link do Vídeo 
-- **URL:** 
-
+## Vídeo (≤3 min)
+Em produção — link será adicionado após a gravação final.

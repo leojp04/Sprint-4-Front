@@ -1,7 +1,12 @@
 import type { Consulta, ConsultaInput } from '../types'
 
-const ENV_BASE = import.meta.env.VITE_API_BASEURL as string | undefined
-const BASE_URL = ENV_BASE && ENV_BASE.trim() !== '' ? ENV_BASE : 'http://localhost:3001'
+const BASE_URL = import.meta.env.VITE_API_URL?.trim()
+
+if (!BASE_URL) {
+  throw new Error(
+    'VITE_API_URL não definida. Crie um arquivo .env na raiz com VITE_API_URL antes de executar.',
+  )
+}
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
@@ -29,7 +34,7 @@ export const api = {
   del: <T>(path: string) => request<T>(path, 'DELETE'),
 }
 
-// Types used by auth helpers (kept lightweight to avoid coupling)
+
 type AnyUser = {
   id: number | string
   email: string

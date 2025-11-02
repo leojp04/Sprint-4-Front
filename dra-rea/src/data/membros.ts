@@ -24,7 +24,7 @@ export const MEMBROS: Membro[] = [
       "https://www.linkedin.com/in/fabr%C3%ADcio-henrique-pereira-3aa94933b/"
   },
   {
-    nome: "Icaro José dos Santos",
+    nome: "Ícaro José dos Santos",
     rm: "562403",
     turma: "1TDSPW",
     github: "https://github.com/Icaro-Jose09",
