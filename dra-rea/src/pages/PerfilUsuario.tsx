@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import Alert from '../components/Alert'
+import { api } from '../services/api'
 
 const BASE_URL = import.meta.env.VITE_API_URL?.trim()
 
