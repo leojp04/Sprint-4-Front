@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 
 export default function BackToTop() {
   const [show, setShow] = useState(false)
@@ -15,7 +15,7 @@ export default function BackToTop() {
   return (
     <button
       type="button"
-      className="back-to-top"
+      className="back-to-top focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand"
       aria-label="Voltar ao topo"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >

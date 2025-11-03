@@ -4,7 +4,11 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
 
-import { api, createUser, getUserByEmailOrUsername } from '../../services/api'
+const BASE_URL = import.meta.env.VITE_API_URL?.trim()
+
+if (!BASE_URL) {
+  throw new Error('VITE_API_URL não definida; configure o arquivo .env antes de usar a área de login.')
+}
 
 const CPF_REGEX = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
 

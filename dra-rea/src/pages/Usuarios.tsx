@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+﻿import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../services/api'
 import { useApi } from '../hooks/useApi'
@@ -27,9 +27,9 @@ export default function Usuarios() {
         <input
           value={q}
           onChange={e => setQ(e.target.value)}
-          placeholder="Buscar por nome, usuário ou e-mail…"
+          placeholder="Buscar por nome, Usuário ou E-mail…"
           className="flex-1 min-w-[240px] rounded-lg px-3 py-2 border border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand"
-          aria-label="Buscar usuários"
+          aria-label="Buscar Usuários"
         />
         <Link
           to="/cadastro"
@@ -70,7 +70,7 @@ export default function Usuarios() {
               {filtrados.length === 0 && (
                 <tr>
                   <td className="p-3 text-gray-600" colSpan={5}>
-                    Nenhum usuário encontrado.
+                    Nenhum Usuário encontrado.
                   </td>
                 </tr>
               )}
