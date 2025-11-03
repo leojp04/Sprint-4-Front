@@ -26,7 +26,6 @@ export interface Consulta {
     | 'fonoaudiologia'
     | 'ortopedia'
   tipoTerapia: 'individual' | 'grupo'
-  diaSemana: string
   dataISO: string
   status: ConsultaStatus
 }

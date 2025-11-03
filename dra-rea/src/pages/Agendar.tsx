@@ -26,12 +26,16 @@ const schema = z.object({
   tipoTerapia: z.enum(['individual', 'grupo'], {
     errorMap: () => ({ message: 'Selecione o tipo de terapia.' }),
   }),
-  diaSemana: z.enum(['segunda-feira', 'terca-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira'], {
-    errorMap: () => ({ message: 'Selecione o dia da semana.' }),
-  }),
   dataISO: z
     .string({ required_error: 'Informe a data e horario.' })
-    .refine((value) => Boolean(value), 'Informe a data e horario.'),
+    .refine((value) => Boolean(value), 'Informe a data e horario.')
+    .refine((value) => {
+      if (!value) return false
+      const selected = new Date(value)
+      if (Number.isNaN(selected.getTime())) return false
+      const now = new Date()
+      return selected.getTime() > now.getTime()
+    }, 'Selecione uma data futura.'),
 })
 
 type FormData = z.infer<typeof schema>
@@ -53,6 +57,16 @@ function formatCpf(value: string) {
     .replace(/(\d{3})(\d)/, '$1.$2')
     .replace(/(\d{3})(\d)/, '$1.$2')
     .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+}
+
+function formatDateTimeLocal(date: Date) {
+  const pad = (value: number) => String(value).padStart(2, '0')
+  const year = date.getFullYear()
+  const month = pad(date.getMonth() + 1)
+  const day = pad(date.getDate())
+  const hours = pad(date.getHours())
+  const minutes = pad(date.getMinutes())
+  return `${year}-${month}-${day}T${hours}:${minutes}`
 }
 
 function getAuthUser() {
@@ -87,7 +101,6 @@ export default function Agendar() {
       cpf: authUser?.cpf ?? '',
       especialidade: undefined,
       tipoTerapia: undefined,
-      diaSemana: undefined,
       dataISO: '',
     },
   })
@@ -114,7 +127,6 @@ export default function Agendar() {
         email: data.email,
         especialidade: data.especialidade,
         tipoTerapia: data.tipoTerapia,
-        diaSemana: data.diaSemana,
         dataISO: data.dataISO,
       })
 
@@ -130,7 +142,6 @@ export default function Agendar() {
         cpf: authUser?.cpf ?? '',
         especialidade: undefined,
         tipoTerapia: undefined,
-        diaSemana: undefined,
         dataISO: '',
       })
 
@@ -274,51 +285,23 @@ export default function Agendar() {
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label htmlFor="diaSemana" className="block text-sm font-semibold text-[#111827] mb-1">
-                Dia da semana
-              </label>
-              <select
-                id="diaSemana"
-                className={selectClasses}
-                aria-invalid={errors.diaSemana ? 'true' : 'false'}
-                defaultValue=""
-                {...register('diaSemana')}
-              >
-                <option value="" disabled>
-                  Selecione
-                </option>
-                <option value="segunda-feira">Segunda-feira</option>
-                <option value="terca-feira">Terca-feira</option>
-                <option value="quarta-feira">Quarta-feira</option>
-                <option value="quinta-feira">Quinta-feira</option>
-                <option value="sexta-feira">Sexta-feira</option>
-              </select>
-              {errors.diaSemana && (
-                <p className="mt-1 text-sm text-red-600" role="alert">
-                  {errors.diaSemana.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="dataISO" className="block text-sm font-semibold text-[#111827] mb-1">
-                Data e horario
-              </label>
-              <input
-                id="dataISO"
-                type="datetime-local"
-                className={inputClasses}
-                aria-invalid={errors.dataISO ? 'true' : 'false'}
-                {...register('dataISO')}
-              />
-              {errors.dataISO && (
-                <p className="mt-1 text-sm text-red-600" role="alert">
-                  {errors.dataISO.message}
-                </p>
-              )}
-            </div>
+          <div>
+            <label htmlFor="dataISO" className="block text-sm font-semibold text-[#111827] mb-1">
+              Data e horario
+            </label>
+            <input
+              id="dataISO"
+              type="datetime-local"
+              className={inputClasses}
+              aria-invalid={errors.dataISO ? 'true' : 'false'}
+              {...register('dataISO')}
+              min={formatDateTimeLocal(new Date())}
+            />
+            {errors.dataISO && (
+              <p className="mt-1 text-sm text-red-600" role="alert">
+                {errors.dataISO.message}
+              </p>
+            )}
           </div>
 
           <button

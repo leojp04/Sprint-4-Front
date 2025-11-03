@@ -127,27 +127,25 @@ export default function PerfilUsuario() {
 
       if (!storedPassword) {
         try {
-          const userResponse = await fetch(`${BASE_URL}/usuarios/${authUser.id}`)
-          if (userResponse.ok) {
-            const userData = (await userResponse.json()) as AuthUser
-            storedPassword = userData.password ?? ''
-            if (storedPassword) {
-              setAuthUser((prev) => (prev ? { ...prev, password: storedPassword } : prev))
-            }
+          const userData = await api.get<AuthUser>(`/usuarios/${authUser.id}`)
+          storedPassword = userData?.password ?? ''
+          if (storedPassword) {
+            setAuthUser((prev) => (prev ? { ...prev, password: storedPassword } : prev))
           }
         } catch {
-          /* ignore */
+          // ignora erro para não interromper o fluxo
         }
       }
 
       if (!storedPassword || storedPassword !== data.senhaAtual) {
+        const message = 'A senha atual informada está incorreta.'
         setError('senhaAtual', {
           type: 'validate',
-          message: 'A senha atual informada está incorreta.',
+          message,
         })
         setFeedback({
           type: 'error',
-          message: 'A senha atual informada está incorreta.',
+          message,
         })
         return
       }
@@ -158,15 +156,7 @@ export default function PerfilUsuario() {
       }
 
       try {
-        const response = await fetch(`${BASE_URL}/usuarios/${authUser.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        })
-
-        if (!response.ok) {
-          throw new Error('Não foi possível atualizar os dados. Tente novamente.')
-        }
+        await api.patch<AuthUser>(`/usuarios/${authUser.id}`, payload)
 
         const updatedUser: AuthUser = {
           ...authUser,
@@ -224,14 +214,13 @@ export default function PerfilUsuario() {
           </div>
         )}
 
-        <form onSubmit={handleSave} className="space-y-5">
+        <form onSubmit={handleSave} className="space-y-6" noValidate>
           <div>
             <label htmlFor="nomeCompleto" className="block text-sm font-semibold text-[#111827] mb-1">
               Nome completo
             </label>
             <input
               id="nomeCompleto"
-              type="text"
               className={`${inputBaseClasses} ${errors.nomeCompleto ? 'border-red-500 focus:ring-red-300' : ''}`}
               aria-invalid={errors.nomeCompleto ? 'true' : 'false'}
               {...register('nomeCompleto')}
@@ -319,7 +308,10 @@ export default function PerfilUsuario() {
           </div>
 
           <div>
-            <label htmlFor="confirmarSenha" className="block text-sm font-semibold text-[#111827] mb-1">
+            <label
+              htmlFor="confirmarSenha"
+              className="block text-sm font-semibold text-[#111827] mb-1"
+            >
               Confirmar senha
             </label>
             <div className="relative">
@@ -335,7 +327,7 @@ export default function PerfilUsuario() {
                 type="button"
                 onClick={() => setShowConfirmarSenha((prev) => !prev)}
                 className="absolute inset-y-0 right-3 flex items-center text-sm font-semibold text-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-300"
-                aria-label={`${showConfirmarSenha ? 'Ocultar' : 'Mostrar'} confirmar senha`}
+                aria-label={`${showConfirmarSenha ? 'Ocultar' : 'Mostrar'} confirmação de senha`}
                 aria-pressed={showConfirmarSenha}
               >
                 {showConfirmarSenha ? 'Ocultar' : 'Mostrar'}

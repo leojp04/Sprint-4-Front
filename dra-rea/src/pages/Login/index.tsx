@@ -104,24 +104,18 @@ export default function LoginPage() {
 
     if (mode === 'login') {
       try {
-        const response = await fetch(
-          `${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`,
-        )
-        if (!response.ok) throw new Error('Falha ao buscar usuario.')
-
-        const users = (await response.json()) as User[]
-        if (!users || users.length === 0) {
-          setFeedback('Usuario nao encontrado.')
+        const candidate = (await getUserByEmailOrUsername(data.email)) as User | null
+        if (!candidate) {
+          setFeedback('Usuário não encontrado.')
           return
         }
 
-        const user = users[0]
-        if ((user.password ?? '') !== data.password) {
+        if ((candidate.password ?? '') !== data.password) {
           setFeedback('Senha incorreta.')
           return
         }
 
-        storeAuthUser(user)
+        storeAuthUser(candidate)
         navigate('/', { replace: true })
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Erro ao efetuar login.'
@@ -131,35 +125,34 @@ export default function LoginPage() {
     }
 
     try {
-      const existsRes = await fetch(
-        `${BASE_URL}/usuarios?email=${encodeURIComponent(data.email)}`,
-      )
-      if (!existsRes.ok) throw new Error('Falha ao verificar e-mail.')
-
-      const exists = (await existsRes.json()) as User[]
-      if (exists && exists.length > 0) {
-        setFeedback('E-mail ja cadastrado.')
+      const emailEncoded = encodeURIComponent(data.email)
+      const existentesPorEmail = await api.get<User[]>(`/usuarios?email=${emailEncoded}`)
+      if (existentesPorEmail.length > 0) {
+        setFeedback('E-mail já cadastrado.')
         return
       }
 
-      const payload = {
+      if (data.cpf) {
+        const cpfEncoded = encodeURIComponent(data.cpf)
+        const existentesPorCpf = await api.get<User[]>(`/usuarios?cpf=${cpfEncoded}`)
+        if (existentesPorCpf.length > 0) {
+          setFeedback('CPF já cadastrado.')
+          return
+        }
+      }
+
+      await createUser({
         nomeCompleto: data.nomeCompleto,
         email: data.email,
         password: data.password,
         cpf: data.cpf,
-      }
-      const createRes = await fetch(`${BASE_URL}/usuarios`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
       })
-      if (!createRes.ok) throw new Error('Falha ao cadastrar usuario.')
 
       setFeedback('Cadastro realizado! Entre com seu e-mail e senha.')
       setMode('login')
       reset({ email: data.email, password: '', cpf: data.cpf })
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro ao cadastrar usuario.'
+      const message = error instanceof Error ? error.message : 'Erro ao cadastrar usuário.'
       setFeedback(message)
     }
   }
@@ -296,14 +289,14 @@ export default function LoginPage() {
         <p className="mt-3 text-sm text-ink">
           {mode === 'login' ? (
             <>
-              Nao tem conta?{' '}
+              Não tem conta?{' '}
               <button type="button" onClick={toggleMode} className="text-brand underline">
                 Cadastre-se
               </button>
             </>
           ) : (
             <>
-              Ja tem conta?{' '}
+              Já tem conta?{' '}
               <button type="button" onClick={toggleMode} className="text-brand underline">
                 Entrar
               </button>

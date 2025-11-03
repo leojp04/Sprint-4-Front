@@ -1,4 +1,4 @@
-﻿# IMREA Digital — Sprint 4 (Front-end Design Engineering)
+# IMREA Digital — Sprint 4 (Front-end Design Engineering)
 
 Aplicação SPA desenvolvida para o desafio IMREA Digital, com foco em acessibilidade, responsividade e integração a serviços de agendamento. O front-end foi construído em **React 19 + Vite + TypeScript**, estilizado com **Tailwind CSS 4** e validado com **React Hook Form + Zod**.
 
@@ -10,6 +10,7 @@ Aplicação SPA desenvolvida para o desafio IMREA Digital, com foco em acessibil
 - React Router DOM 7
 - React Hook Form + Zod
 - ESLint
+- json-server (mock da API)
 
 ## Variáveis de Ambiente
 Crie um arquivo `.env` na raiz de `dra-rea/` com:
@@ -52,6 +53,42 @@ src/
   routes.ts
   index.css
 ```
+
+## Estrutura de pastas
+```
+src/
+  assets/
+  components/
+  data/
+  hooks/
+  pages/
+  services/
+  types/
+  App.tsx
+  main.tsx
+  routes.ts
+  index.css
+```
+
+## Como rodar localmente
+1. Faça uma cópia de `.env.example` para `.env` e ajuste `VITE_API_URL`.
+2. Instale as dependências:
+   ```
+   npm install
+   ```
+3. Inicie o ambiente de desenvolvimento:
+   ```
+   npm run dev
+   ```
+   A aplicação abrirá em `http://localhost:5173`.
+
+
+## Build & Deploy
+- Produção (Vercel):   
+- Build local para conferência:
+  ```
+  npm run build && npm run preview
+  ```
 
 ## Integrantes
 - **Leonardo José Pereira** — RM **563065** — 1TDSPW  

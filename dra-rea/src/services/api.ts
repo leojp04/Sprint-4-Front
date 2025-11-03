@@ -1,20 +1,21 @@
 import type { Consulta, ConsultaInput } from '../types'
 
 const BASE_URL = import.meta.env.VITE_API_URL?.trim()
-
 if (!BASE_URL) {
   throw new Error(
     'VITE_API_URL não definida. Crie um arquivo .env na raiz com VITE_API_URL antes de executar.',
   )
 }
 
-type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
-async function request<T>(path: string, method: Method = 'GET', body?: unknown): Promise<T> {
+export async function request<T>(
+  path: string,
+  init?: RequestInit & { method?: HttpMethod },
+): Promise<T> {
   const response = await fetch(`${BASE_URL}${path}`, {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: body ? JSON.stringify(body) : undefined,
+    headers: { 'Content-Type': 'application/json', ...(init?.headers || {}) },
+    ...init,
   })
 
   if (!response.ok) {
@@ -22,18 +23,38 @@ async function request<T>(path: string, method: Method = 'GET', body?: unknown):
     throw new Error(`HTTP ${response.status} - ${text || response.statusText}`)
   }
 
-  if (response.status === 204) return undefined as T
+  const contentType = response.headers.get('content-type') || ''
+  if (!contentType.includes('application/json')) {
+    return undefined as T
+  }
+
   return (await response.json()) as T
 }
 
 export const api = {
-  get: <T>(path: string) => request<T>(path, 'GET'),
-  post: <T>(path: string, payload: unknown) => request<T>(path, 'POST', payload),
-  put: <T>(path: string, payload: unknown) => request<T>(path, 'PUT', payload),
-  patch: <T>(path: string, payload: unknown) => request<T>(path, 'PATCH', payload),
-  del: <T>(path: string) => request<T>(path, 'DELETE'),
+  get: <T>(path: string, init?: RequestInit) =>
+    request<T>(path, { ...(init ?? {}), method: 'GET' }),
+  post: <T>(path: string, payload: unknown, init?: RequestInit) =>
+    request<T>(path, {
+      ...(init ?? {}),
+      method: 'POST',
+      body: payload !== undefined ? JSON.stringify(payload) : undefined,
+    }),
+  put: <T>(path: string, payload: unknown, init?: RequestInit) =>
+    request<T>(path, {
+      ...(init ?? {}),
+      method: 'PUT',
+      body: payload !== undefined ? JSON.stringify(payload) : undefined,
+    }),
+  patch: <T>(path: string, payload: unknown, init?: RequestInit) =>
+    request<T>(path, {
+      ...(init ?? {}),
+      method: 'PATCH',
+      body: payload !== undefined ? JSON.stringify(payload) : undefined,
+    }),
+  del: <T>(path: string, init?: RequestInit) =>
+    request<T>(path, { ...(init ?? {}), method: 'DELETE' }),
 }
-
 
 type AnyUser = {
   id: number | string
