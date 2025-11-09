@@ -52,17 +52,61 @@ npm run preview
 
 ## Estrutura de pastas (front)
 ```
-src/
-  assets/
-  components/
-  data/
-  hooks/
-  pages/
-  services/
-  types/
-  App.tsx
-  main.tsx
-  routes.ts
+dra-rea/
+├── public/
+│   ├── 404.html
+│   ├── DevTools.jpg
+│   ├── IMREA.png
+│   ├── Render-Usuarios.jpg
+│   ├── render-Consultas.jpg
+│   └── manifest.webmanifest · robots.txt · sitemap.xml · …
+├── src/
+│   ├── assets/
+│   │   └── react.svg
+│   ├── components/
+│   │   ├── Alert.tsx
+│   │   ├── BackToTop.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Header.tsx
+│   │   ├── Layout.tsx
+│   │   ├── MembroCard.tsx
+│   │   ├── Modal.tsx
+│   │   ├── RequireAuth.tsx
+│   │   └── WatsonChat.tsx
+│   ├── data/
+│   │   └── membros.ts
+│   ├── hooks/
+│   │   └── useApi.ts
+│   ├── pages/
+│   │   ├── Agendar.tsx
+│   │   ├── Contato.tsx
+│   │   ├── FAQ.tsx
+│   │   ├── Home.tsx
+│   │   ├── Integrantes.tsx
+│   │   ├── Login/
+│   │   │   └── index.tsx
+│   │   ├── Membro.tsx
+│   │   ├── NotFound.tsx
+│   │   ├── Perfil.tsx
+│   │   ├── PerfilUsuario.tsx
+│   │   ├── Sobre.tsx
+│   │   ├── Solucao.tsx
+│   │   ├── UsuarioDetalhe.tsx
+│   │   └── Usuarios.tsx
+│   ├── services/
+│   │   └── api.ts
+│   ├── types/
+│   │   └── index.ts
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   └── routes.ts
+├── .env.example
+├── package.json
+├── tsconfig.json · tsconfig.app.json · tsconfig.node.json
+├── vite.config.ts
+└── README.md
+
 ```
 
 ## Integrantes
