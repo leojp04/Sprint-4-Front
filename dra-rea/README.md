@@ -1,44 +1,50 @@
 # IMREA Digital — Sprint 4 (Front-end Design Engineering)
 
-Aplicação SPA desenvolvida para o desafio IMREA Digital, com foco em acessibilidade, responsividade e integração a serviços de agendamento. O front-end foi construído em **React 19 + Vite + TypeScript**, estilizado com **Tailwind CSS 4** e validado com **React Hook Form + Zod**.
+Aplicação SPA desenvolvida para o desafio IMREA Digital, com foco em acessibilidade, responsividade e integração ao fluxo de agendamentos do instituto. O front-end foi construído em **React 19 + Vite + TypeScript**, estilizado com **Tailwind CSS 4** e validado com **React Hook Form + Zod**.
 
-## Tecnologias
-- React 19
-- Vite 5
+## Deploys e repositórios
+- Front-end (Vercel): https://sprint-4-front-ywbf.vercel.app/
+- API (Render): https://api-front-cyke.onrender.com
+- Repositório do front: https://github.com/leojp04/Sprint-4-Front
+- Repositório da API Java: https://github.com/leojp04/API-Front
+
+## Tecnologias principais
+- React 19 + Vite 5
 - TypeScript 5
 - Tailwind CSS 4
 - React Router DOM 7
 - React Hook Form + Zod
-- ESLint
-- json-server (mock da API)
+- ESLint (flat config)
 
-## Variáveis de Ambiente
-Crie um arquivo `.env` na raiz de `dra-rea/` com:
-```bash
-VITE_API_URL=https://api-front-cyke.onrender.com
-```
-Esta URL aponta para o mock da API publicado no Render (json-server). Para usar outro backend, substitua pelo endpoint desejado antes de rodar o projeto.
+## Pré-requisitos
+- Node.js 20+ e npm 10+
+- `.env` configurado com a URL base da API
 
-## Como rodar localmente
+## Configuração e execução local
 ```bash
 cd dra-rea
+cp .env.example .env       
 npm install
 npm run dev
 ```
-A aplicação ficará disponível em `http://localhost:5173`.
-
-Para validar o build de produção:
+A aplicação inicializa em `http://localhost:5173`. Para conferir o build de produção:
 ```bash
 npm run build
 npm run preview
 ```
 
-## Build & Deploy
-- Produção (Vercel): https://sprint-4-front-ywbf.vercel.app/
-- Preview local: `npm run build && npm run preview`
-- Base da API utilizada em produção: https://api-front-cyke.onrender.com
+## Scripts úteis
+- `npm run dev` — ambiente de desenvolvimento (Vite)
+- `npm run build` — build otimizado
+- `npm run preview` — serve o build para inspeção local
+- `npm run lint` — validação estática
 
-## Estrutura de pastas
+## Integração com a API Java
+- Base URL utilizada em produção: `https://api-front-cyke.onrender.com`
+- Endpoints consumidos pelo front: `/usuarios`, `/consultas` e variações com query string (`?cpf=` etc.).
+- O projeto completo da API está disponível em `leojp04/API-Front` (Java/Spring). O repositório pode ser clonado, executado localmente (perfil default) ou implantado no Render; o front apenas depende de `VITE_API_URL` apontando para a instância desejada.
+
+## Estrutura de pastas (front)
 ```
 src/
   assets/
@@ -51,44 +57,7 @@ src/
   App.tsx
   main.tsx
   routes.ts
-  index.css
 ```
-
-## Estrutura de pastas
-```
-src/
-  assets/
-  components/
-  data/
-  hooks/
-  pages/
-  services/
-  types/
-  App.tsx
-  main.tsx
-  routes.ts
-  index.css
-```
-
-## Como rodar localmente
-1. Faça uma cópia de `.env.example` para `.env` e ajuste `VITE_API_URL`.
-2. Instale as dependências:
-   ```
-   npm install
-   ```
-3. Inicie o ambiente de desenvolvimento:
-   ```
-   npm run dev
-   ```
-   A aplicação abrirá em `http://localhost:5173`.
-
-
-## Build & Deploy
-- Produção (Vercel):   
-- Build local para conferência:
-  ```
-  npm run build && npm run preview
-  ```
 
 ## Integrantes
 - **Leonardo José Pereira** — RM **563065** — 1TDSPW  
@@ -98,10 +67,4 @@ src/
 - **Ícaro José dos Santos** — RM **562403** — 1TDSPW  
   GitHub: https://github.com/Icaro-Jose09 · LinkedIn: https://www.linkedin.com/in/icaro-jose-jose-96b651324
 
-## API Mock
-Mock publicado no Render: https://api-front-cyke.onrender.com  
-Repositório do mock: https://github.com/leojp04/API-Front  
-Repositório do front: https://github.com/leojp04/Sprint-4-Front
-
-## Vídeo (≤3 min)
-Em produção — link será adicionado após a gravação final.
+## Vídeo (≤ 3 min)
