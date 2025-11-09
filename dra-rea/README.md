@@ -5,8 +5,10 @@ Aplicação SPA desenvolvida para o desafio IMREA Digital, com foco em acessibil
 ## Deploys e repositórios
 - Front-end (Vercel): https://sprint-4-front-ywbf.vercel.app/
 - API (Render): https://api-front-cyke.onrender.com
+- API (Usuarios): https://api-front-cyke.onrender.com/usuarios
+- API (consultas): https://api-front-cyke.onrender.com/consultas
 - Repositório do front: https://github.com/leojp04/Sprint-4-Front
-- Repositório da API Java: https://github.com/leojp04/API-Front
+
 
 ## Tecnologias principais
 - React 19 + Vite 5
@@ -43,6 +45,10 @@ npm run preview
 - Base URL utilizada em produção: `https://api-front-cyke.onrender.com`
 - Endpoints consumidos pelo front: `/usuarios`, `/consultas` e variações com query string (`?cpf=` etc.).
 - O projeto completo da API está disponível em `leojp04/API-Front` (Java/Spring). O repositório pode ser clonado, executado localmente (perfil default) ou implantado no Render; o front apenas depende de `VITE_API_URL` apontando para a instância desejada.
+
+![Evidência da API Java respondendo via DevTools](public/DevTools.jpg)
+![Tela pública do Render listando recursos](public/render-Consultas.jpg)
+![Resposta JSON do endpoint /usuarios](public/Render-Usuarios.jpg)
 
 ## Estrutura de pastas (front)
 ```
