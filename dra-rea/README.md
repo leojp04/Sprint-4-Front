@@ -44,7 +44,7 @@ npm run preview
 ## Integração com a API Java
 - Base URL utilizada em produção: `https://api-front-cyke.onrender.com`
 - Endpoints consumidos pelo front: `/usuarios`, `/consultas` e variações com query string (`?cpf=` etc.).
-- O projeto completo da API está disponível em `leojp04/API-Front` (Java/Spring). O repositório pode ser clonado, executado localmente (perfil default) ou implantado no Render; o front apenas depende de `VITE_API_URL` apontando para a instância desejada.
+
 
 ![Evidência da API Java respondendo via DevTools](public/DevTools.jpg)
 ![Tela pública do Render listando recursos](public/render-Consultas.jpg)
